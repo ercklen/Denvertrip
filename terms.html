@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>  <!-- Google Consent Mode v2 Default -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    var stored = localStorage.getItem('cookie_consent');
+    var analytics = 'denied', ads = 'denied';
+    if (stored) {
+      try {
+        var p = JSON.parse(stored);
+        if (p.analytics) analytics = 'granted';
+        if (p.advertising) ads = 'granted';
+      } catch(e){}
+    }
+    gtag('consent', 'default', {
+      'analytics_storage': analytics,
+      'ad_storage': ads,
+      'ad_user_data': ads,
+      'ad_personalization': ads
+    });
+  </script>
+
 <!-- Google tag (gtag.js) - GA4 + Google Ads -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-38XNTL49BZ"></script>
 <script>
@@ -84,7 +104,27 @@
   </div>
 </nav>
 
-<header class="page-hero">
+<header class="page-hero">  <!-- Google Consent Mode v2 Default -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    var stored = localStorage.getItem('cookie_consent');
+    var analytics = 'denied', ads = 'denied';
+    if (stored) {
+      try {
+        var p = JSON.parse(stored);
+        if (p.analytics) analytics = 'granted';
+        if (p.advertising) ads = 'granted';
+      } catch(e){}
+    }
+    gtag('consent', 'default', {
+      'analytics_storage': analytics,
+      'ad_storage': ads,
+      'ad_user_data': ads,
+      'ad_personalization': ads
+    });
+  </script>
+
 <!-- Google tag (gtag.js) - GA4 + Google Ads -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-38XNTL49BZ"></script>
 <script>

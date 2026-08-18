@@ -3,58 +3,8 @@
 const CONFIG = {
   GA4_MEASUREMENT_ID: 'G-38XNTL49BZ',
   GOOGLE_ADS_CONVERSION_ID: 'AW-11549299572',
-  GOOGLE_ADS_CONVERSION_LABEL: '[PASTE_CONVERSION_LABEL_HERE]' // Optional: specific label for a primary conversion
+  GOOGLE_ADS_CONVERSION_LABEL: '[PASTE_CONVERSION_LABEL_HERE]' 
 };
-
-// --- Consent Management System ---
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-
-// 1. Set default consent state before initializing gtag
-(function initializeConsent() {
-  let storedConsent = localStorage.getItem('cookie_consent');
-  let consentSettings = {
-    analytics_storage: 'denied',
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied'
-  };
-
-  if (storedConsent) {
-    try {
-      const parsed = JSON.parse(storedConsent);
-      if (parsed.analytics) consentSettings.analytics_storage = 'granted';
-      if (parsed.advertising) {
-        consentSettings.ad_storage = 'granted';
-        consentSettings.ad_user_data = 'granted';
-        consentSettings.ad_personalization = 'granted';
-      }
-    } catch (e) {
-      console.error('Error parsing stored consent', e);
-    }
-  }
-
-  gtag('consent', 'default', consentSettings);
-})();
-
-// 2. Initialize Google Tag
-(function() {
-  gtag('js', new Date());
-  
-  // Note: Consent mode automatically queues hits until granted, or fires them without cookies if denied (cookieless pings).
-  gtag('config', CONFIG.GA4_MEASUREMENT_ID, {
-    'send_page_view': true 
-  });
-
-  if (CONFIG.GOOGLE_ADS_CONVERSION_ID && CONFIG.GOOGLE_ADS_CONVERSION_ID !== '[PASTE_CONVERSION_ID_HERE]') {
-    gtag('config', CONFIG.GOOGLE_ADS_CONVERSION_ID);
-  }
-
-  var script = document.createElement('script');
-  script.async = true;
-  script.src = 'https://www.googletagmanager.com/gtag/js?id=' + CONFIG.GA4_MEASUREMENT_ID;
-  document.head.appendChild(script);
-})();
 
 // --- UTM and Click ID Preservation ---
 function preserveTrackingParams() {
@@ -81,6 +31,9 @@ function getStoredTrackingParams() {
 preserveTrackingParams();
 
 // --- Event Tracking Utilities ---
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+
 function trackEvent(eventName, eventParams = {}) {
   const combinedParams = { ...eventParams, ...getStoredTrackingParams() };
   if (window.gtag) gtag('event', eventName, combinedParams);
@@ -153,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Track Form Submissions (only on submit, implying basic validation passed)
+  // Track Form Submissions
   document.querySelectorAll('form').forEach(form => {
     form.addEventListener('submit', function(e) {
       const formClass = this.className || 'default_form';
@@ -299,7 +252,6 @@ function injectConsentUI() {
       color: var(--text-secondary, #ccc);
       line-height: 1.4;
     }
-    /* Toggle Switch */
     .toggle-switch {
       position: relative;
       display: inline-block;
@@ -458,7 +410,6 @@ function injectConsentUI() {
       toggleAdvertising.checked = p.advertising;
     } catch(e) {}
   } else {
-    // Show banner if no consent stored
     banner.style.display = 'block';
   }
 
@@ -475,7 +426,6 @@ function injectConsentUI() {
     saveConsent(toggleAnalytics.checked, toggleAdvertising.checked);
   });
   
-  // Close modal if clicking outside content
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
       modal.style.display = 'none';
@@ -486,12 +436,10 @@ function injectConsentUI() {
   });
 
   // Attach to footer links dynamically
-  document.querySelectorAll('a').forEach(link => {
-    if (link.innerText.toLowerCase().includes('cookie') || link.innerText.toLowerCase().includes('privacy settings')) {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        modal.style.display = 'flex';
-      });
-    }
+  document.querySelectorAll('a.cookie-settings-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.style.display = 'flex';
+    });
   });
 }
