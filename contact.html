@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us | Denvertrip</title>
+  <link rel="canonical" href="https://denvertrip.com/contact.html" />
+  <meta property="og:title" content="Denvertrip | Luxury Airport Transportation" />
+  <meta property="og:description" content="Premium private airport transportation from Denver International Airport." />
+  <meta property="og:url" content="https://denvertrip.com/contact.html" />
+  <meta property="og:type" content="website" />
+  <meta name="description" content="Contact Denvertrip for premium private airport transportation and luxury chauffeur services in Denver and Colorado." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Page specific styles */
+    .page-hero {
+      padding: 160px 5% 80px;
+      text-align: center;
+      background: var(--bg-dark);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: 3.5rem;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+    .page-sub {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .contact-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 5%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+    .contact-info-panel {
+      padding-right: 40px;
+    }
+    .contact-info-panel h3 {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      margin-bottom: 24px;
+      color: var(--gold);
+    }
+    .contact-info-panel p {
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+    .contact-method {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .contact-method svg {
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .c-method-details h4 {
+      color: var(--text-primary);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .c-method-details p, .c-method-details a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .c-method-details a:hover {
+      color: var(--gold);
+    }
+    .contact-form-panel {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+    }
+    .contact-form .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .contact-form .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .contact-form label {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .contact-form input, .contact-form textarea {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 16px;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    .contact-form input:focus, .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .contact-form button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 18px;
+    }
+    
+    @media (max-width: 900px) {
+      .contact-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .contact-info-panel {
+        padding-right: 0;
+      }
+      .contact-form .field-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script src="tracking.js"></script>`n</head>
+<body>
+
+<!-- ─── NAVIGATION ─── -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-icon">✦</span>
+      <div class="logo-text">
+        <span class="logo-main">DENVER</span>
+        <span class="logo-sub">TRIP</span>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#airport-section">Airport Transfer</a></li>
+      <li><a href="index.html#fleet-section">Fleet</a></li>
+      <li><a href="index.html#destinations-section">Destinations</a></li>
+      <li><a href="index.html#corporate-section">Corporate</a></li>
+      <li><a href="index.html#about-section">About</a></li>
+    </ul>
+    <a href="index.html#planner-section" class="btn-gold nav-cta" style="text-decoration: none; text-align: center;">Plan Your Ride</a>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <ul>
+    <li><a href="index.html#airport-section">Airport Transfer</a></li>
+    <li><a href="index.html#fleet-section">Fleet</a></li>
+    <li><a href="index.html#destinations-section">Destinations</a></li>
+    <li><a href="index.html#corporate-section">Corporate</a></li>
+    <li><a href="index.html#about-section">About</a></li>
+  </ul>
+  <a href="index.html#planner-section" class="btn-gold mobile-cta" style="text-decoration: none; text-align: center;">Plan Your Ride</a>
+</div>
+
+<!-- ─── HEADER ─── -->
+<header class="page-hero">
+  <h1 class="page-title">Contact Us</h1>
+  <p class="page-sub">We are here to assist you with reservations, special requests, and inquiries. Reach out to our concierge team 24/7.</p>
+</header>
+
+<!-- ─── CONTACT SECTION ─── -->
+<section class="contact-container">
+  <div class="contact-info-panel">
+    <h3>Get in Touch</h3>
+    <p>Our dedicated team is ready to ensure your journey is seamless from start to finish. Whether you need an immediate airport transfer or are planning complex corporate transportation, we are at your service.</p>
+    
+    <div class="contact-method">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.69h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <div class="c-method-details">
+        <h4>Phone</h4>
+        <p><a href="tel:+17205680206">+1 (720) 568-0206</a></p>
+        <p style="font-size: 0.8rem; margin-top: 4px;">Available 24/7 for immediate assistance</p>
+      </div>
+    </div>
+    
+    <div class="contact-method">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <div class="c-method-details">
+        <h4>Email</h4>
+        <p><a href="mailto:coloradodenverlimousine@gmail.com">coloradodenverlimousine@gmail.com</a></p>
+        <p style="font-size: 0.8rem; margin-top: 4px;">Expect a response within 2 hours</p>
+      </div>
+    </div>
+    
+    <div class="contact-method">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div class="c-method-details">
+        <h4>Headquarters</h4>
+        <p>Denver, Colorado</p>
+        <p style="font-size: 0.8rem; margin-top: 4px;">Serving the greater metropolitan area and beyond</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="contact-form-panel">
+    <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your inquiry. Our team will contact you shortly.');">
+      <div class="field-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" required placeholder="Enter your first name" />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" required placeholder="Enter your last name" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" required placeholder="Enter your email" />
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="Enter your phone number (optional)" />
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea required placeholder="How can we assist you?"></textarea>
+      </div>
+      <button type="submit" class="btn-gold">Send Inquiry</button>
+    </form>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <span class="logo-icon">✦</span>
+        <div class="logo-text">
+          <span class="logo-main">DENVER</span>
+          <span class="logo-sub">TRIP</span>
+        </div>
+      </div>
+      <p class="footer-tagline">Luxury transportation throughout<br />Denver and Colorado.</p>
+    </div>
+    <div class="footer-nav-group">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="index.html#airport-section">Airport Transportation</a></li>
+        <li><a href="index.html#fleet-section">Fleet</a></li>
+        <li><a href="index.html#destinations-section">Destinations</a></li>
+        <li><a href="index.html#corporate-section">Corporate</a></li>
+      </ul>
+    </div>
+    <div class="footer-nav-group">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="index.html#about-section">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+      </ul>
+    </div>
+    <div class="footer-contact">
+      <h4>Contact</h4>
+      <div class="contact-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.69h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>+1 (720) 568-0206</span>
+      </div>
+      <div class="contact-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <a href="mailto:coloradodenverlimousine@gmail.com">coloradodenverlimousine@gmail.com</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Denvertrip. All Rights Reserved.</p>
+    <div class="footer-bottom-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <span>|</span>
+      <a href="terms.html">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Simple hamburger menu logic for subpages
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileClose = document.getElementById('mobileClose');
+  
+  if(hamburger && mobileMenu) {
+    hamburger.addEventListener('click', () => mobileMenu.classList.add('active'));
+    mobileClose.addEventListener('click', () => mobileMenu.classList.remove('active'));
+  }
+</script>
+</body>
+</html>
