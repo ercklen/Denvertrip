@@ -1,8 +1,8 @@
 // tracking.js
 // Configuration
 const CONFIG = {
-  GA4_MEASUREMENT_ID: '[PASTE_MY_GA4_ID_HERE]',
-  GOOGLE_ADS_CONVERSION_ID: '[PASTE_CONVERSION_ID_HERE]',
+  GA4_MEASUREMENT_ID: 'G-38XNTL49BZ',
+  GOOGLE_ADS_CONVERSION_ID: 'AW-11549299572',
   GOOGLE_ADS_CONVERSION_LABEL: '[PASTE_CONVERSION_LABEL_HERE]' // Optional: specific label for a primary conversion
 };
 
@@ -25,7 +25,7 @@ const CONFIG = {
   });
 
   // Configure Google Ads
-  if (CONFIG.GOOGLE_ADS_CONVERSION_ID && CONFIG.GOOGLE_ADS_CONVERSION_ID !== '[PASTE_CONVERSION_ID_HERE]') {
+  if (CONFIG.GOOGLE_ADS_CONVERSION_ID && CONFIG.GOOGLE_ADS_CONVERSION_ID !== 'AW-11549299572') {
     gtag('config', CONFIG.GOOGLE_ADS_CONVERSION_ID);
   }
 })();
@@ -70,7 +70,7 @@ function trackEvent(eventName, eventParams = {}) {
 }
 
 function trackGoogleAdsConversion(conversionLabel) {
-    if (!CONFIG.GOOGLE_ADS_CONVERSION_ID || CONFIG.GOOGLE_ADS_CONVERSION_ID === '[PASTE_CONVERSION_ID_HERE]') return;
+    if (!CONFIG.GOOGLE_ADS_CONVERSION_ID || CONFIG.GOOGLE_ADS_CONVERSION_ID === 'AW-11549299572') return;
     if (!conversionLabel) return;
     
     if (window.gtag) {
