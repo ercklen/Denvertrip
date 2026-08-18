@@ -1,77 +1,71 @@
-# Denvertrip Tracking Documentation
+# Denvertrip Tracking & Consent Documentation
 
-This document explains the Google Analytics 4 (GA4), Google Ads, and Google Search Console infrastructure integrated into the website.
+This document explains the Google Analytics 4 (GA4), Google Ads, and Custom Cookie Consent infrastructure integrated into the website.
 
 ## 1. Configuration & Tracking IDs
 
-The tracking configuration is centralized in the `tracking.js` file located in the root directory. This script is loaded in the `<head>` of every HTML page.
+The entire tracking and consent system is centralized in `tracking.js`.
 
-To connect your own Google accounts, open `tracking.js` and replace the placeholder variables at the top of the file:
+To update your Google IDs, open `tracking.js` and edit the `CONFIG` object at the very top:
 
 ```javascript
 const CONFIG = {
-  GA4_MEASUREMENT_ID: 'G-XXXXXXXXXX', // Replace with your GA4 Measurement ID
-  GOOGLE_ADS_CONVERSION_ID: 'AW-XXXXXXXXX', // Replace with your Google Ads Conversion ID
-  GOOGLE_ADS_CONVERSION_LABEL: 'XXXXXXXXXXXXXXXXXXX' // (Optional) Replace with your Ads Conversion Label
+  GA4_MEASUREMENT_ID: 'G-38XNTL49BZ', // Your GA4 Measurement ID
+  GOOGLE_ADS_CONVERSION_ID: 'AW-11549299572', // Your Google Ads Conversion ID
+  GOOGLE_ADS_CONVERSION_LABEL: '[PASTE_CONVERSION_LABEL_HERE]' // Optional: Ads Conversion Label
 };
 ```
 
-## 2. Tracked Events (GA4)
+## 2. Custom Cookie Consent System & Google Consent Mode v2
 
-The `tracking.js` script automatically tracks key interactions across the site. All events include `page_location` and `button_text` where applicable, along with persisted UTM parameters.
+A lightweight, 100% free, and fully compliant cookie consent banner is built directly into `tracking.js`. No third-party CMPs (like Cookiebot or OneTrust) are used.
 
-* **`page_view`**: Automatically tracked on all pages by the GA4 base tag.
-* **`phone_click`**: Tracked when a user clicks on any `tel:` link (e.g., calling the phone number).
-* **`email_click`**: Tracked when a user clicks on any `mailto:` link.
-* **`whatsapp_click`**: Tracked when a user clicks on any WhatsApp link (`wa.me` or `whatsapp.com`).
-* **`booking_request`**: Tracked when CTA buttons containing "book" or "plan" are clicked.
-* **`quote_request`**: Tracked when CTA buttons containing "quote" are clicked.
-* **`contact_click`**: Tracked when CTA buttons containing "contact" or "inquiry" are clicked.
-* **`cta_click`**: Generic fallback for other main CTA buttons.
-* **`contact_form_submit`**: Tracked when the contact form is successfully submitted.
-* **`generate_lead`**: Tracked when other general forms are successfully submitted.
+### How it works:
+* **Default State**: Before the user chooses, Google Consent Mode is set to `denied` for analytics and advertising. This means GA4 fires "cookieless pings" and no PII/cookies are read.
+* **Banner**: New visitors see a sleek banner at the bottom of the screen.
+* **Accept All**: Grants all permissions (`analytics_storage`, `ad_storage`, etc.).
+* **Reject All**: Keeps all permissions denied.
+* **Manage Preferences**: Opens a modal where users can individually toggle Analytics and Advertising cookies.
+* **Persistence**: Choices are saved in `localStorage` under the key `cookie_consent` so the banner doesn't show again.
+* **Cookie Settings Link**: A link is provided in the website footer. Clicking it reopens the preferences modal so users can change their minds at any time.
+
+When the user updates their preference, `gtag('consent', 'update', ...)` is called instantly without requiring a page reload.
+
+## 3. Tracked Events
+
+The `tracking.js` script tracks meaningful interactions dynamically. All tracking respects the visitor's consent choice.
+
+* **`page_view`**: Tracked on load.
+* **`phone_click`**: Fired when a `tel:` link is clicked.
+* **`email_click`**: Fired when a `mailto:` link is clicked.
+* **`whatsapp_click`**: Fired when a `wa.me` link is clicked.
+* **`booking_request`**: Fired when CTA buttons containing "book" or "plan" are clicked.
+* **`quote_request`**: Fired when CTA buttons containing "quote" are clicked.
+* **`contact_form_submit`**: Fired upon successful contact form submission.
+* **`generate_lead`**: Fired upon other form submissions.
 
 ### Privacy & UTMs
-* No Personally Identifiable Information (PII) like names, emails, or phone numbers are sent to Google Analytics.
-* UTM parameters (`utm_source`, `utm_medium`, etc.) and Google Click IDs (`gclid`, `wbraid`, `gbraid`) are captured from the URL and stored in `sessionStorage` to persist across pages. They are attached to conversion events.
+* **No PII** (Names, Emails, Phone numbers, Message contents) is ever sent to GA4.
+* **UTM parameters** and **Google Click IDs** (`gclid`, `wbraid`) are parsed from the URL and stored in `sessionStorage`. They are appended to all custom events automatically, so attribution is not lost if the user navigates between pages before converting.
 
-## 3. Google Ads Conversions
+## 4. Google Ads Conversions
 
-The infrastructure supports Google Ads conversion tracking directly.
+### Events to Import
+You should link GA4 to Google Ads and import the following GA4 key events as conversions:
+* `booking_request`
+* `quote_request`
+* `contact_form_submit`
+* `phone_click`
 
-When a form is submitted or a phone link is clicked, the script checks for `GOOGLE_ADS_CONVERSION_ID` and `GOOGLE_ADS_CONVERSION_LABEL`. If configured, it fires a direct Google Ads conversion event:
-
-```javascript
-gtag('event', 'conversion', { 'send_to': 'AW-XXXXXXXXX/YYYYYYYYYYYY' });
-```
-
-### Next Steps in Google Ads:
-1. Ensure **Auto-tagging** is enabled in your Google Ads account settings (this adds the `gclid` parameter to your URLs).
-2. Create Conversion Actions in Google Ads (e.g., "Lead Form Submit", "Phone Call Click").
-3. Get the Conversion ID and Label for each action.
-4. Paste the primary Conversion ID and Label into `tracking.js`.
-5. Link your GA4 account to your Google Ads account to import key events like `whatsapp_click` or `booking_request`.
-
-## 4. Google Search Console Readiness
-
-The website is fully prepared for Google Search Console and SEO:
-
-* **`robots.txt`**: Added to the root directory to allow crawling.
-* **`sitemap.xml`**: Added to the root directory outlining all pages and their priority.
-* **Canonical URLs**: `<link rel="canonical" href="...">` added to all HTML heads to prevent duplicate content issues.
-* **Open Graph Meta Tags**: Added for better sharing on social media and visibility.
-* **Semantic HTML**: Existing structure uses proper header tags (`<h1>`, `<h2>`, etc.).
-
-### Next Steps in Search Console:
-1. Go to [Google Search Console](https://search.google.com/search-console).
-2. Add your property (e.g., `https://denvertrip.com`).
-3. Verify ownership (since the GA4 tag is on the site, you can verify using the Google Analytics method).
-4. Submit the sitemap (`https://denvertrip.com/sitemap.xml`) in the Sitemaps tab.
+### Direct Google Ads Tagging
+If you prefer direct Google Ads tracking for a primary action, you can paste the Conversion Label into `CONFIG.GOOGLE_ADS_CONVERSION_LABEL`. The script will then fire a direct Google Ads conversion (e.g., `AW-XXXXXXXXX/YYYYYYYYYY`) on form submissions and high-value button clicks.
 
 ## 5. Testing the Implementation
 
-To test that everything is working correctly before launching campaigns:
-
-1. **Google Tag Assistant**: Install the [Google Tag Assistant browser extension](https://get.google.com/tagassistant/) or use [tagassistant.google.com](https://tagassistant.google.com/). Enter your URL to verify that the GA4 tag is firing.
-2. **GA4 DebugView**: Go to your GA4 property -> Admin -> DebugView. Click around your site (buttons, forms, phone links) and watch the events populate in real-time.
-3. **Console Logs**: Open your browser's Developer Tools (F12) -> Console. The `tracking.js` script prints out exactly what is being tracked when you interact with tracked elements (e.g., `Tracking Event: phone_click { ... }`).
+1. **Test the Banner**: Open the site in an Incognito window. The banner should appear.
+2. **Test Consent Mode**: 
+   * Open your browser Console (F12).
+   * Run `dataLayer` in the console. You should see a `consent`, `default` push with everything set to `denied`.
+   * Click "Accept All". Run `dataLayer` again. You should see a `consent`, `update` push setting them to `granted`.
+3. **GA4 DebugView**: Go to GA4 Admin -> DebugView. Perform actions (click phone numbers, submit forms) and verify the events populate.
+4. **Google Tag Assistant**: Install the Tag Assistant extension or use [tagassistant.google.com](https://tagassistant.google.com/) to verify the tags load and the Consent state is passed correctly to Google.
