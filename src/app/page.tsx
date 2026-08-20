@@ -7,14 +7,87 @@ import TestimonialsStack from "@/components/ui/testimonials-stack";
 import ColoradoCoverageMap from "@/components/ui/colorado-coverage-map";
 import HowItWorks from "@/components/ui/how-it-works";
 
+/* ─── Fleet Data ─── */
+const fleetData = {
+  suv: {
+    type: "Luxury SUV",
+    name: "Cadillac Escalade · GMC Yukon Denali · Chevrolet Suburban",
+    img: "fleet_escalade_suv_1786503952518.jpg",
+    desc: "Spacious luxury SUVs engineered for the highest standards of airport and executive transportation. Premium leather seating, climate control, and professional presentation.",
+    specs: [
+      { icon: "👤", label: "Up to 6 Passengers" },
+      { icon: "🧳", label: "6 Checked Bags" },
+      { icon: "📏", label: "Full-Size SUV" },
+    ],
+    features: ["Premium Leather Seating","Climate Control","USB Charging","Tinted Windows","Professional Chauffeur","Flight Monitoring","Complimentary Water","Airport Pickup Sign"],
+  },
+  sedan: {
+    type: "Executive Sedan",
+    name: "Mercedes-Benz S-Class · BMW 7 Series · Cadillac CT6",
+    img: "fleet_executive_sedan_1786503961868.jpg",
+    desc: "The pinnacle of refined executive transportation. Discreet, elegant and engineered for those who demand the highest level of comfort and privacy for every journey.",
+    specs: [
+      { icon: "👤", label: "Up to 3 Passengers" },
+      { icon: "🧳", label: "3 Bags" },
+      { icon: "🎯", label: "Executive Class" },
+    ],
+    features: ["Heated Massaging Seats","Ambient Lighting","Privacy Glass","Noise Isolation","Wi-Fi Hotspot","Premium Audio","Champagne Welcome","Door-to-Door Service"],
+  },
+  sprinter: {
+    type: "Sprinter Van",
+    name: "Mercedes-Benz Sprinter Executive",
+    img: "vopt_sprinter.jpg",
+    desc: "Premium transportation for groups, corporate roadshows, and extended families. Spacious, comfortable, and luxurious for all your travel needs throughout Denver and Colorado.",
+    specs: [
+      { icon: "👥", label: "Up to 14 Passengers" },
+      { icon: "🧳", label: "Up to 14 Bags" },
+      { icon: "✨", label: "Extended Headroom" },
+    ],
+    features: ["Luxurious Leather Seating","Extended Headroom","Premium Sound System","Rear Climate Control","Privacy Tint","USB Charging Ports","Ample Legroom","Group Boarding"],
+  },
+} as const;
+
+type FleetType = keyof typeof fleetData;
+type ModalType = "comingSoon" | "fleet" | "inquiry" | null;
+
 export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState<ModalType>(null);
+  const [fleetType, setFleetType] = useState<FleetType>("suv");
+  const [passengers, setPassengers] = useState(1);
+  const [activeVehicle, setActiveVehicle] = useState<FleetType>("suv");
+
   const closeMenu = () => setMenuOpen(false);
+  const closeModal = () => setActiveModal(null);
+  const openComingSoon = () => setActiveModal("comingSoon");
+  const openFleet = (type: FleetType) => { setFleetType(type); setActiveModal("fleet"); };
+  const openInquiry = () => setActiveModal("inquiry");
+
+  const scrollTo = (id: string, offset = 80) => {
+    const el = document.getElementById(id);
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  };
+  const scrollToPlanner = () => scrollTo("planner-section", 100);
+  const scrollToFleet   = () => scrollTo("fleet-section");
+  const scrollToTop     = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+  const adjustPassengers = (delta: number) =>
+    setPassengers((p) => Math.max(1, Math.min(14, p + delta)));
+
+  const currentFleet = fleetData[fleetType];
+
+  /* close modal when clicking backdrop */
+  const onBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) closeModal();
+  };
 
   return (
     <>
     <div className="min-h-screen w-full overflow-x-clip bg-[#0a0a0a] text-white">
-      
+
 
 
 {/*  ─── NAVIGATION ───  */}
@@ -35,13 +108,12 @@ export default function HomePage() {
       <li><a href="#occasions-section">Special Events</a></li>
       <li><a href="#about-section">About</a></li>
     </ul>
-    <button className="btn-gold nav-cta" onClick={closeMenu}>Plan Your Ride</button>
+    <button className="btn-gold nav-cta" onClick={scrollToPlanner}>Plan Your Ride</button>
     <button className="hamburger" aria-label="Open menu" onClick={() => setMenuOpen(true)}>
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
-
 
 {/*  ─── HERO ───  */}
 <section className="hero" id="home">
@@ -51,11 +123,11 @@ export default function HomePage() {
   </div>
   <div className="hero-content reveal">
     <h1 className="hero-headline">
-      Luxury Transportation,<br />From Denver Airport<br /><em>to Wherever You're Going.</em>
+      Luxury Transportation,<br />From Denver Airport<br /><em>to Wherever You&apos;re Going.</em>
     </h1>
     <p className="hero-sub">Private airport transfers, executive transportation, and premium chauffeur service throughout Denver and Colorado.</p>
     <div className="hero-ctas">
-      <button className="btn-gold hero-btn-primary" >Plan Your Ride</button>
+      <button className="btn-gold hero-btn-primary" onClick={scrollToPlanner}>Plan Your Ride</button>
       <a href="#fleet-section" className="btn-ghost hero-btn-secondary">Explore Our Fleet</a>
     </div>
     <div className="trust-bar">
@@ -83,14 +155,14 @@ export default function HomePage() {
       <div className="field-row">
         <div className="form-field">
           <label>Pickup Location</label>
-          <div className="field-input" id="pickupField" >
+          <div className="field-input" id="pickupField">
             <span className="field-icon">✈</span>
             <span className="field-value" id="pickupValue">Denver International Airport (DEN)</span>
             <span className="field-arrow">›</span>
           </div>
           <div className="field-dropdown" id="pickupDropdown">
-            <div className="dropdown-item active" >✈ Denver International Airport (DEN)</div>
-            <div className="dropdown-item" >📍 Custom Location</div>
+            <div className="dropdown-item active">✈ Denver International Airport (DEN)</div>
+            <div className="dropdown-item">📍 Custom Location</div>
           </div>
         </div>
         <div className="field-swap">⇌</div>
@@ -98,19 +170,19 @@ export default function HomePage() {
           <label>Destination</label>
           <div className="field-input" id="destFieldWrapper">
             <span className="field-icon">📍</span>
-            <input type="text" id="destInput" placeholder="Where are you going?" autoComplete="off"   />
+            <input type="text" id="destInput" placeholder="Where are you going?" autoComplete="off" />
           </div>
           <div className="field-dropdown" id="destDropdown">
-            <div className="dropdown-item" >🌆 Downtown Denver <span className="dest-dist">~45 min</span></div>
-            <div className="dropdown-item" >🏡 Cherry Creek <span className="dest-dist">~50 min</span></div>
-            <div className="dropdown-item" >⛰ Boulder <span className="dest-dist">~1h 15min</span></div>
-            <div className="dropdown-item" >🌇 Aurora <span className="dest-dist">~35 min</span></div>
-            <div className="dropdown-item" >🏘 Lakewood <span className="dest-dist">~55 min</span></div>
-            <div className="dropdown-item" >🏙 Centennial <span className="dest-dist">~55 min</span></div>
-            <div className="dropdown-item" >🏢 Englewood <span className="dest-dist">~50 min</span></div>
-            <div className="dropdown-item" >🏔 Colorado Springs <span className="dest-dist">~2h 10min</span></div>
-            <div className="dropdown-item" >⛷ Vail <span className="dest-dist">~2h 30min</span></div>
-            <div className="dropdown-item" >🌿 Aspen <span className="dest-dist">~4h</span></div>
+            <div className="dropdown-item">🌆 Downtown Denver <span className="dest-dist">~45 min</span></div>
+            <div className="dropdown-item">🏡 Cherry Creek <span className="dest-dist">~50 min</span></div>
+            <div className="dropdown-item">⛰ Boulder <span className="dest-dist">~1h 15min</span></div>
+            <div className="dropdown-item">🌇 Aurora <span className="dest-dist">~35 min</span></div>
+            <div className="dropdown-item">🏘 Lakewood <span className="dest-dist">~55 min</span></div>
+            <div className="dropdown-item">🏙 Centennial <span className="dest-dist">~55 min</span></div>
+            <div className="dropdown-item">🏢 Englewood <span className="dest-dist">~50 min</span></div>
+            <div className="dropdown-item">🏔 Colorado Springs <span className="dest-dist">~2h 10min</span></div>
+            <div className="dropdown-item">⛷ Vail <span className="dest-dist">~2h 30min</span></div>
+            <div className="dropdown-item">🌿 Aspen <span className="dest-dist">~4h</span></div>
           </div>
         </div>
       </div>
@@ -133,10 +205,10 @@ export default function HomePage() {
           <label>Passengers</label>
           <div className="field-input passenger-selector">
             <span className="field-icon">👤</span>
-            <span id="passengerCount">1 Passenger</span>
+            <span id="passengerCount">{passengers === 1 ? "1 Passenger" : `${passengers} Passengers`}</span>
             <div className="passenger-controls">
-              <button >−</button>
-              <button >+</button>
+              <button onClick={() => adjustPassengers(-1)}>−</button>
+              <button onClick={() => adjustPassengers(1)}>+</button>
             </div>
           </div>
         </div>
@@ -144,17 +216,29 @@ export default function HomePage() {
       <div className="vehicle-selector-row">
         <label className="vehicle-label">Select Vehicle Class</label>
         <div className="vehicle-options">
-          <button className="vehicle-opt active"  id="vopt-suv">
+          <button
+            className={`vehicle-opt${activeVehicle === "suv" ? " active" : ""}`}
+            onClick={() => setActiveVehicle("suv")}
+            id="vopt-suv"
+          >
             <img className="vopt-img" src="vopt_suv.png" alt="Luxury SUV" />
             <span className="vopt-name">Luxury SUV</span>
             <span className="vopt-cap">Up to 6</span>
           </button>
-          <button className="vehicle-opt"  id="vopt-sedan">
+          <button
+            className={`vehicle-opt${activeVehicle === "sedan" ? " active" : ""}`}
+            onClick={() => setActiveVehicle("sedan")}
+            id="vopt-sedan"
+          >
             <img className="vopt-img" src="vopt_sedan.png" alt="Executive Sedan" />
             <span className="vopt-name">Executive Sedan</span>
             <span className="vopt-cap">Up to 3</span>
           </button>
-          <button className="vehicle-opt"  id="vopt-sprinter">
+          <button
+            className={`vehicle-opt${activeVehicle === "sprinter" ? " active" : ""}`}
+            onClick={() => setActiveVehicle("sprinter")}
+            id="vopt-sprinter"
+          >
             <img className="vopt-img" src="vopt_sprinter.png" alt="Sprinter Van" />
             <span className="vopt-name">Sprinter Van</span>
             <span className="vopt-cap">Up to 14</span>
@@ -162,7 +246,7 @@ export default function HomePage() {
         </div>
       </div>
       <div className="planner-actions">
-        <button className="btn-gold planner-btn" >
+        <button className="btn-gold planner-btn" onClick={openComingSoon}>
           Continue
           <span className="btn-arrow">→</span>
         </button>
@@ -234,7 +318,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        <button className="btn-gold" >Book Airport Transfer</button>
+        <button className="btn-gold" onClick={scrollToPlanner}>Book Airport Transfer</button>
       </div>
       <div className="airport-image reveal reveal-right">
         <img src="hero_den_airport_1786503942729.jpg" alt="Denver International Airport luxury transfer" className="airport-img" />
@@ -257,7 +341,7 @@ export default function HomePage() {
     </div>
     <div className="fleet-grid">
       {/*  SUV Card  */}
-      <div className="fleet-card reveal" >
+      <div className="fleet-card reveal">
         <div className="fleet-img-wrap">
           <img src="fleet_escalade_suv_1786503952518.jpg" alt="Cadillac Escalade Luxury SUV" className="fleet-img" />
           <div className="fleet-img-overlay"></div>
@@ -273,11 +357,11 @@ export default function HomePage() {
             <span className="spec"><span className="spec-icon">👤</span> Up to 6 passengers</span>
             <span className="spec"><span className="spec-icon">🧳</span> 6 bags</span>
           </div>
-          <button className="fleet-cta">View SUV <span>→</span></button>
+          <button className="fleet-cta" onClick={() => openFleet("suv")}>View SUV <span>→</span></button>
         </div>
       </div>
       {/*  Sedan Card  */}
-      <div className="fleet-card reveal" >
+      <div className="fleet-card reveal">
         <div className="fleet-img-wrap">
           <img src="fleet_executive_sedan_1786503961868.jpg" alt="Mercedes-Benz S-Class Executive Sedan" className="fleet-img" />
           <div className="fleet-img-overlay"></div>
@@ -292,11 +376,11 @@ export default function HomePage() {
             <span className="spec"><span className="spec-icon">👤</span> Up to 3 passengers</span>
             <span className="spec"><span className="spec-icon">🧳</span> 3 bags</span>
           </div>
-          <button className="fleet-cta">View Sedan <span>→</span></button>
+          <button className="fleet-cta" onClick={() => openFleet("sedan")}>View Sedan <span>→</span></button>
         </div>
       </div>
       {/*  Sprinter Van Card  */}
-      <div className="fleet-card reveal" >
+      <div className="fleet-card reveal">
         <div className="fleet-img-wrap">
           <img src="vopt_sprinter.jpg" alt="Sprinter Van" className="fleet-img" />
           <div className="fleet-img-overlay"></div>
@@ -311,7 +395,7 @@ export default function HomePage() {
             <span className="spec"><span className="spec-icon">👥</span> Up to 14 passengers</span>
             <span className="spec"><span className="spec-icon">🥂</span> Amenities</span>
           </div>
-          <button className="fleet-cta">View Sprinter <span>→</span></button>
+          <button className="fleet-cta" onClick={() => openFleet("sprinter")}>View Sprinter <span>→</span></button>
         </div>
       </div>
     </div>
@@ -403,7 +487,7 @@ export default function HomePage() {
     <div className="experience-content reveal">
       <p className="section-eyebrow">The Denvertrip Standard</p>
       <h2 className="experience-heading">The Difference Is<br />in the <em>Details.</em></h2>
-      <p className="experience-body">From immaculate vehicles to professional service, every part of the journey is designed around comfort, privacy and reliability. We don't just provide transportation — we deliver an experience.</p>
+      <p className="experience-body">From immaculate vehicles to professional service, every part of the journey is designed around comfort, privacy and reliability. We don&apos;t just provide transportation — we deliver an experience.</p>
       <ul className="experience-features">
         <li><span className="feat-check">✓</span> Premium vehicles, always immaculate</li>
         <li><span className="feat-check">✓</span> Professional, uniformed chauffeurs</li>
@@ -412,7 +496,7 @@ export default function HomePage() {
         <li><span className="feat-check">✓</span> Private transfers across Colorado</li>
         <li><span className="feat-check">✓</span> Special events and celebrations</li>
       </ul>
-      <button className="btn-gold" >Plan Your Ride</button>
+      <button className="btn-gold" onClick={scrollToPlanner}>Plan Your Ride</button>
     </div>
   </div>
 </section>
@@ -474,7 +558,7 @@ export default function HomePage() {
           <span>Multi-vehicle coordination</span>
         </div>
       </div>
-      <button className="btn-gold" >Corporate Transportation</button>
+      <button className="btn-gold" onClick={openInquiry}>Corporate Transportation</button>
     </div>
   </div>
 </section>
@@ -485,7 +569,7 @@ export default function HomePage() {
     <div className="section-header reveal">
       <p className="section-eyebrow">Special Events</p>
       <h2 className="section-heading">Make the Occasion<br /><em>Extraordinary.</em></h2>
-      <p className="section-sub">Whether it's a wedding, a night out, or a milestone celebration — arrive in style.</p>
+      <p className="section-sub">Whether it&apos;s a wedding, a night out, or a milestone celebration — arrive in style.</p>
     </div>
     <div className="occasions-layout">
       <div className="occasions-img-wrap reveal">
@@ -493,47 +577,47 @@ export default function HomePage() {
         <div className="occasions-img-overlay"></div>
       </div>
       <div className="occasions-grid reveal reveal-right">
-        <div className="occasion-card" >
+        <div className="occasion-card">
           <div className="occ-icon">💍</div>
           <h4>Weddings</h4>
           <p>Make your most important day unforgettable.</p>
         </div>
-        <div className="occasion-card" >
+        <div className="occasion-card">
           <div className="occ-icon">🎓</div>
           <h4>Proms</h4>
-          <p>Arrive in style for the night you'll always remember.</p>
+          <p>Arrive in style for the night you&apos;ll always remember.</p>
         </div>
-        <div className="occasion-card" >
+        <div className="occasion-card">
           <div className="occ-icon">🥂</div>
           <h4>Anniversaries</h4>
           <p>Celebrate in comfort and luxury.</p>
         </div>
-        <div className="occasion-card" >
+        <div className="occasion-card">
           <div className="occ-icon">🎵</div>
           <h4>Concerts</h4>
           <p>Arrive and depart from any venue with ease.</p>
         </div>
-        <div className="occasion-card" >
+        <div className="occasion-card">
           <div className="occ-icon">🏆</div>
           <h4>Sporting Events</h4>
           <p>Broncos, Nuggets, Rockies — travel like a VIP.</p>
         </div>
-        <div className="occasion-card" >
+        <div className="occasion-card">
           <div className="occ-icon">🌃</div>
           <h4>Night Out</h4>
           <p>Explore Denver in style and comfort.</p>
         </div>
-        <div className="occasion-card" >
+        <div className="occasion-card">
           <div className="occ-icon">💼</div>
           <h4>Corporate Events</h4>
           <p>Impress clients and colleagues alike.</p>
         </div>
-        <div className="occasion-card cta-card" >
+        <button className="occasion-card cta-card" onClick={openInquiry} style={{cursor:"pointer",background:"transparent",border:"none",textAlign:"left",width:"100%"}}>
           <div className="occ-icon">✦</div>
           <h4>Explore Special Events</h4>
           <p>Inquire about our full events program</p>
           <span className="occ-arrow">→</span>
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -580,11 +664,9 @@ export default function HomePage() {
       <h4>Company</h4>
       <ul>
         <li><a href="#about-section">About Us</a></li>
-        <li><a href="#" >Reservations</a></li>
+        <li><a href="#" onClick={(e) => { e.preventDefault(); scrollToPlanner(); }}>Reservations</a></li>
         <li><a href="/contact">Contact</a></li>
-        <li><a href="#" className="cookie-settings-link">Cookie Settings</a>
-      <span>|</span>
-      <a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
         <li><a href="/terms">Terms of Service</a></li>
       </ul>
     </div>
@@ -607,8 +689,6 @@ export default function HomePage() {
   <div className="footer-bottom">
     <p>© 2026 Denvertrip. All Rights Reserved.</p>
     <div className="footer-bottom-links">
-      <a href="#" className="cookie-settings-link">Cookie Settings</a>
-      <span>|</span>
       <a href="/privacy">Privacy Policy</a>
       <span>|</span>
       <a href="/terms">Terms of Service</a>
@@ -619,41 +699,69 @@ export default function HomePage() {
 {/*  ─── MODALS ───  */}
 
 {/*  Coming Soon Modal  */}
-<div className="modal-overlay" id="comingSoonModal" >
+<div
+  className={`modal-overlay${activeModal === "comingSoon" ? " open" : ""}`}
+  id="comingSoonModal"
+  onClick={onBackdrop}
+>
   <div className="modal-box">
-    <button className="modal-close" >✕</button>
+    <button className="modal-close" onClick={closeModal}>✕</button>
     <div className="modal-icon">✦</div>
     <h2 className="modal-title">Reservations Are<br />Coming Soon</h2>
-    <p className="modal-body">Online booking is currently being finalized. We're preparing a seamless reservation experience for our clients. In the meantime, explore our fleet and transportation options.</p>
+    <p className="modal-body">Online booking is currently being finalized. We&apos;re preparing a seamless reservation experience for our clients. In the meantime, explore our fleet and transportation options.</p>
     <div className="modal-actions">
-      <button className="btn-gold" >Explore Our Fleet</button>
-      <button className="btn-outline" >Return Home</button>
+      <button className="btn-gold" onClick={() => { closeModal(); scrollToFleet(); }}>Explore Our Fleet</button>
+      <button className="btn-outline" onClick={() => { closeModal(); scrollToTop(); }}>Return Home</button>
     </div>
   </div>
 </div>
 
 {/*  Fleet Detail Modal  */}
-<div className="modal-overlay" id="fleetModal" >
+<div
+  className={`modal-overlay${activeModal === "fleet" ? " open" : ""}`}
+  id="fleetModal"
+  onClick={onBackdrop}
+>
   <div className="modal-box modal-fleet">
-    <button className="modal-close" >✕</button>
+    <button className="modal-close" onClick={closeModal}>✕</button>
     <div className="fleet-modal-img-wrap">
-      <img id="fleetModalImg" src="" alt="" className="fleet-modal-img" />
+      <img
+        id="fleetModalImg"
+        src={currentFleet.img}
+        alt={currentFleet.name}
+        className="fleet-modal-img"
+      />
     </div>
     <div className="fleet-modal-content">
-      <p className="modal-eyebrow" id="fleetModalType"></p>
-      <h2 className="fleet-modal-title" id="fleetModalName"></h2>
-      <p className="fleet-modal-desc" id="fleetModalDesc"></p>
-      <div className="fleet-modal-specs" id="fleetModalSpecs"></div>
-      <div className="fleet-modal-features" id="fleetModalFeatures"></div>
-      <button className="btn-gold" >Request This Vehicle</button>
+      <p className="modal-eyebrow" id="fleetModalType">{currentFleet.type}</p>
+      <h2 className="fleet-modal-title" id="fleetModalName">{currentFleet.name}</h2>
+      <p className="fleet-modal-desc" id="fleetModalDesc">{currentFleet.desc}</p>
+      <div className="fleet-modal-specs" id="fleetModalSpecs">
+        {currentFleet.specs.map((s, i) => (
+          <div key={i} className="fleet-modal-spec">{s.icon} {s.label}</div>
+        ))}
+      </div>
+      <div className="fleet-modal-features" id="fleetModalFeatures">
+        {currentFleet.features.map((f, i) => (
+          <span key={i} className="fleet-modal-feat">✓ {f}</span>
+        ))}
+      </div>
+      <button className="btn-gold" onClick={openComingSoon}>Request This Vehicle</button>
     </div>
   </div>
 </div>
 
-{/*  Route Preview Modal  */}
-<div className="modal-overlay" id="routeModal" >
+{/*  Route Preview Modal — populated by script.js (map/carousel interactions)  */}
+<div className="modal-overlay" id="routeModal">
   <div className="modal-box modal-route">
-    <button className="modal-close" >✕</button>
+    <button
+      className="modal-close"
+      onClick={() => {
+        const m = document.getElementById("routeModal");
+        if (m) m.classList.remove("open");
+        document.body.classList.remove("modal-open");
+      }}
+    >✕</button>
     <p className="modal-eyebrow">Route Preview</p>
     <h2 className="route-modal-title" id="routeTitle"></h2>
     <div className="route-preview">
@@ -678,22 +786,41 @@ export default function HomePage() {
     </div>
     <p className="route-desc" id="routeDesc"></p>
     <div className="modal-actions">
-      <button className="btn-gold" >Plan This Trip</button>
-      <button className="btn-outline" >Close</button>
+      <button
+        className="btn-gold"
+        onClick={() => {
+          const m = document.getElementById("routeModal");
+          if (m) m.classList.remove("open");
+          document.body.classList.remove("modal-open");
+          scrollToPlanner();
+        }}
+      >Plan This Trip</button>
+      <button
+        className="btn-outline"
+        onClick={() => {
+          const m = document.getElementById("routeModal");
+          if (m) m.classList.remove("open");
+          document.body.classList.remove("modal-open");
+        }}
+      >Close</button>
     </div>
   </div>
 </div>
 
 {/*  Inquiry Modal  */}
-<div className="modal-overlay" id="inquiryModal" >
+<div
+  className={`modal-overlay${activeModal === "inquiry" ? " open" : ""}`}
+  id="inquiryModal"
+  onClick={onBackdrop}
+>
   <div className="modal-box">
-    <button className="modal-close" >✕</button>
+    <button className="modal-close" onClick={closeModal}>✕</button>
     <div className="modal-icon">💼</div>
     <h2 className="modal-title">Corporate &amp; Group<br />Transportation</h2>
-    <p className="modal-body">Our corporate inquiry system is being finalized. Soon you'll be able to set up dedicated accounts, priority scheduling, and custom billing arrangements directly online.</p>
+    <p className="modal-body">Our corporate inquiry system is being finalized. Soon you&apos;ll be able to set up dedicated accounts, priority scheduling, and custom billing arrangements directly online.</p>
     <div className="modal-actions">
-      <button className="btn-gold" >Explore Reservation Options</button>
-      <button className="btn-outline" >Close</button>
+      <button className="btn-gold" onClick={() => { closeModal(); scrollToPlanner(); }}>Explore Reservation Options</button>
+      <button className="btn-outline" onClick={closeModal}>Close</button>
     </div>
   </div>
 </div>
@@ -704,8 +831,6 @@ export default function HomePage() {
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
   </svg>
 </a>
-
-
 
       <Script src="/script.js" strategy="lazyOnload" />
     </div>
@@ -721,10 +846,9 @@ export default function HomePage() {
     <li><a href="#occasions-section" onClick={closeMenu}>Special Events</a></li>
     <li><a href="#about-section" onClick={closeMenu}>About</a></li>
   </ul>
-  <button className="btn-gold mobile-cta" onClick={closeMenu}>Plan Your Ride</button>
+  <button className="btn-gold mobile-cta" onClick={() => { closeMenu(); scrollToPlanner(); }}>Plan Your Ride</button>
 </div>
 
     </>
   );
 }
-
