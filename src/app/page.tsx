@@ -3,6 +3,7 @@
 import React from "react";
 import Script from "next/script";
 import CarouselStacked from "@/components/ui/carousel-07";
+import TestimonialsStack from "@/components/ui/testimonials-stack";
 
 export default function HomePage() {
   return (
@@ -470,79 +471,15 @@ export default function HomePage() {
 </section>
 
 {/*  ─── TESTIMONIALS ───  */}
-<section className="testimonials-section section-pad">
+<section className="testimonials-section section-pad overflow-hidden" id="testimonials-section">
   <div className="container">
     <div className="section-header reveal">
       <p className="section-eyebrow">Client Reviews</p>
       <h2 className="section-heading">What Our Clients<br /><em>Are Saying.</em></h2>
+      <p className="section-sub">Verified 5-star experiences from executive travelers, mountain visitors, and event organizers.</p>
     </div>
-    <div className="testimonials-carousel reveal">
-      <div className="testimonials-track" id="testimonialsTrack">
-        <div className="testimonial-card">
-          <div className="stars">★★★★★</div>
-          <p className="testimonial-text">"Excellent service from the airport to downtown Denver. The vehicle was immaculate and the entire experience felt completely effortless. This is exactly what luxury transportation should be."</p>
-          <div className="testimonial-author">
-            <div className="author-avatar">MR</div>
-            <div>
-              <span className="author-name">Michael R.</span>
-              <span className="author-role">Executive, Denver</span>
-            </div>
-          </div>
-        </div>
-        <div className="testimonial-card">
-          <div className="stars">★★★★★</div>
-          <p className="testimonial-text">"Professional, comfortable and exactly what I expect from a premium transportation service. The chauffeur was waiting for me even though my flight was delayed. Truly exceptional."</p>
-          <div className="testimonial-author">
-            <div className="author-avatar">ST</div>
-            <div>
-              <span className="author-name">Sarah T.</span>
-              <span className="author-role">Frequent Traveler</span>
-            </div>
-          </div>
-        </div>
-        <div className="testimonial-card">
-          <div className="stars">★★★★★</div>
-          <p className="testimonial-text">"We used Denvertrip for our corporate retreat to Vail. The Escalades were gorgeous inside and out, and the chauffeurs were professional throughout. Our clients were very impressed."</p>
-          <div className="testimonial-author">
-            <div className="author-avatar">JL</div>
-            <div>
-              <span className="author-name">James L.</span>
-              <span className="author-role">Corporate Events Director</span>
-            </div>
-          </div>
-        </div>
-        <div className="testimonial-card">
-          <div className="stars">★★★★★</div>
-          <p className="testimonial-text">"Booked the stretch limousine for our anniversary — from DEN to our dinner in Cherry Creek. Every detail was perfect. From the chilled champagne to the professional service, it was unforgettable."</p>
-          <div className="testimonial-author">
-            <div className="author-avatar">AK</div>
-            <div>
-              <span className="author-name">Amanda K.</span>
-              <span className="author-role">Denver Resident</span>
-            </div>
-          </div>
-        </div>
-        <div className="testimonial-card">
-          <div className="stars">★★★★★</div>
-          <p className="testimonial-text">"I've used many transportation services and none compare to this level of luxury and reliability. The Mercedes S-Class was pristine and the driver was excellent. My go-to for business travel."</p>
-          <div className="testimonial-author">
-            <div className="author-avatar">RD</div>
-            <div>
-              <span className="author-name">Robert D.</span>
-              <span className="author-role">Business Consultant</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="carousel-controls">
-        <button className="carousel-btn" id="prevBtn" >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15,18 9,12 15,6"/></svg>
-        </button>
-        <div className="carousel-dots" id="carouselDots"></div>
-        <button className="carousel-btn" id="nextBtn" >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9,18 15,12 9,6"/></svg>
-        </button>
-      </div>
+    <div className="w-full">
+      <TestimonialsStack />
     </div>
   </div>
 </section>
