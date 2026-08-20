@@ -1,4 +1,4 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -2450,3 +2450,18 @@ body.modal-open { overflow: hidden; }
     right: 20px;
   }
 }
+
+/* ═══════════════════════════════════════════════
+   MAPLIBRE CUSTOM DARK POPUP (NO WHITE OUTLINE)
+═══════════════════════════════════════════════ */
+.maplibregl-popup-content {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+.maplibregl-popup-tip {
+  display: none !important;
+}
+

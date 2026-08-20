@@ -356,7 +356,13 @@ function MarkerTooltip({ children, className, ...popupOptions }: MarkerTooltipPr
   const container = useMemo(() => document.createElement("div"), []);
   const prevTooltipOptions = useRef(popupOptions);
   const tooltip = useMemo(() => {
-    return new MapLibreGL.Popup({ offset: 16, ...popupOptions, closeOnClick: true, closeButton: false }).setMaxWidth("none");
+    return new MapLibreGL.Popup({
+      offset: 16,
+      className: "custom-map-popup",
+      ...popupOptions,
+      closeOnClick: true,
+      closeButton: false,
+    }).setMaxWidth("none");
   }, []);
 
   useEffect(() => {
