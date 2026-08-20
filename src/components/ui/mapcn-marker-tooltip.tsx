@@ -232,6 +232,7 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
       setIsLoaded(false);
       setIsStyleLoaded(false);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -313,6 +314,7 @@ function MapMarker({ longitude, latitude, children, onClick, onMouseEnter, onMou
       callbacksRef.current.onDragEnd?.({ lng: lngLat.lng, lat: lngLat.lat });
     });
     return markerInstance;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -363,6 +365,7 @@ function MarkerTooltip({ children, className, ...popupOptions }: MarkerTooltipPr
       closeOnClick: true,
       closeButton: false,
     }).setMaxWidth("none");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
