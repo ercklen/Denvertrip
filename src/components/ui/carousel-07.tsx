@@ -163,8 +163,10 @@ export const CarouselStacked = () => {
         <motion.div
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
-          onDragStart={() => {
+          onPointerDown={() => {
             dragTotal.current = 0;
+          }}
+          onDragStart={() => {
             handleDragStart();
           }}
           onDrag={(_, info) => {

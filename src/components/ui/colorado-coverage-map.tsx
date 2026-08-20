@@ -104,20 +104,29 @@ export function ColoradoCoverageMap() {
               key={loc.id}
               longitude={loc.lng}
               latitude={loc.lat}
+              onClick={() => {
+                if (typeof window !== "undefined" && (window as any).openReactRouteModal && !loc.isHub) {
+                  (window as any).openReactRouteModal(
+                    loc.name,
+                    loc.timeFromDEN,
+                    `${loc.category} transport from Denver International Airport.`
+                  );
+                }
+              }}
             >
               <MarkerContent>
                 {loc.isHub ? (
-                  <div className="relative flex items-center justify-center size-7 rounded-full bg-[#c9a84c] border-2 border-white shadow-[0_0_15px_rgba(201,168,76,0.9)] animate-bounce cursor-pointer">
+                  <div className="relative flex items-center justify-center size-7 rounded-full bg-[#c9a84c] border-2 border-white shadow-[0_0_15px_rgba(201,168,76,0.9)] animate-bounce cursor-pointer pointer-events-auto">
                     <span className="text-black text-[12px] font-bold">✈</span>
                   </div>
                 ) : (
-                  <div className="relative flex items-center justify-center size-5 rounded-full bg-[#161616] border-2 border-[#c9a84c] shadow-[0_0_10px_rgba(201,168,76,0.6)] transition-transform duration-300 hover:scale-125 cursor-pointer">
+                  <div className="relative flex items-center justify-center size-5 rounded-full bg-[#161616] border-2 border-[#c9a84c] shadow-[0_0_10px_rgba(201,168,76,0.6)] transition-transform duration-300 hover:scale-125 cursor-pointer pointer-events-auto">
                     <div className="size-2 rounded-full bg-[#c9a84c]" />
                   </div>
                 )}
               </MarkerContent>
 
-              <MarkerTooltip className="bg-[#121212] border border-[#c9a84c]/50 p-3 text-left shadow-2xl min-w-[200px] rounded-xl backdrop-blur-md">
+              <MarkerTooltip className="bg-[#121212] border border-[#c9a84c]/50 p-3 text-left shadow-2xl min-w-[200px] rounded-xl backdrop-blur-md pointer-events-none">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xs font-bold text-[#f0ebe0] font-serif">
                     {loc.name}
