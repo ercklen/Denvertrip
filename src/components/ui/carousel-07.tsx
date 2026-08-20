@@ -112,6 +112,7 @@ const getCarouselConfig = (width: number): CarouselConfig => {
 export const CarouselStacked = () => {
   const scrollProgress = useMotionValue(0);
   const startProgress = React.useRef(0);
+  const dragTotal = React.useRef(0);
   const [windowWidth, setWindowWidth] = React.useState(0);
 
   const total = slides.length;
@@ -162,13 +163,19 @@ export const CarouselStacked = () => {
         <motion.div
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
-          onDragStart={handleDragStart}
+          onDragStart={() => {
+            dragTotal.current = 0;
+            handleDragStart();
+          }}
           onDrag={(_, info) => {
+            dragTotal.current = Math.abs(info.offset.x);
             const delta = -info.delta.x / config.sensitivity;
             scrollProgress.set(scrollProgress.get() + delta);
           }}
           onDragEnd={handleDragEnd}
           onTap={() => {
+            if (dragTotal.current > 5) return; // Cancel tap if it was actually a drag swipe
+            
             const activeIndex = (Math.round(scrollProgress.get()) % total + total) % total;
             const slide = slides[activeIndex];
             if (typeof window !== "undefined" && (window as any).openRouteModal) {
