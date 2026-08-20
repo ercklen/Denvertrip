@@ -47,6 +47,19 @@ const fleetData = {
   },
 } as const;
 
+const destItems = [
+  { name: 'Downtown Denver', icon: '🌆', time: '~45 min' },
+  { name: 'Cherry Creek', icon: '🏡', time: '~50 min' },
+  { name: 'Boulder', icon: '⛰', time: '~1h 15min' },
+  { name: 'Aurora', icon: '🌇', time: '~35 min' },
+  { name: 'Lakewood', icon: '🏘', time: '~55 min' },
+  { name: 'Centennial', icon: '🏙', time: '~55 min' },
+  { name: 'Englewood', icon: '🏢', time: '~50 min' },
+  { name: 'Colorado Springs', icon: '🏔', time: '~2h 10min' },
+  { name: 'Vail', icon: '⛷', time: '~2h 30min' },
+  { name: 'Aspen', icon: '🌿', time: '~4h' },
+];
+
 type FleetType = keyof typeof fleetData;
 type ModalType = "comingSoon" | "fleet" | "inquiry" | null;
 
@@ -56,6 +69,26 @@ export default function HomePage() {
   const [fleetType, setFleetType] = useState<FleetType>("suv");
   const [passengers, setPassengers] = useState(1);
   const [activeVehicle, setActiveVehicle] = useState<FleetType>("suv");
+
+  // Planner Dropdown States
+  const [pickup, setPickup] = useState("Denver International Airport (DEN)");
+  const [pickupOpen, setPickupOpen] = useState(false);
+  const [destSearch, setDestSearch] = useState("");
+  const [destOpen, setDestOpen] = useState(false);
+
+  React.useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('#pickupFieldWrapper')) {
+        setPickupOpen(false);
+      }
+      if (!target.closest('#destFieldWrapper')) {
+        setDestOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const closeMenu = () => setMenuOpen(false);
   const closeModal = () => setActiveModal(null);
@@ -153,36 +186,53 @@ export default function HomePage() {
     </div>
     <div className="planner-form">
       <div className="field-row">
-        <div className="form-field">
+        <div className="form-field" id="pickupFieldWrapper">
           <label>Pickup Location</label>
-          <div className="field-input" id="pickupField">
-            <span className="field-icon">✈</span>
-            <span className="field-value" id="pickupValue">Denver International Airport (DEN)</span>
+          <div className="field-input" onClick={() => { setPickupOpen(!pickupOpen); setDestOpen(false); }} style={{ cursor: 'pointer' }}>
+            <span className="field-icon">{pickup.includes('Airport') ? '✈' : '📍'}</span>
+            <span className="field-value">{pickup}</span>
             <span className="field-arrow">›</span>
           </div>
-          <div className="field-dropdown" id="pickupDropdown">
-            <div className="dropdown-item active">✈ Denver International Airport (DEN)</div>
-            <div className="dropdown-item">📍 Custom Location</div>
+          <div className={`field-dropdown${pickupOpen ? " open" : ""}`}>
+            <div className={`dropdown-item${pickup === "Denver International Airport (DEN)" ? " active" : ""}`} onClick={() => { setPickup("Denver International Airport (DEN)"); setPickupOpen(false); }}>✈ Denver International Airport (DEN)</div>
+            <div className={`dropdown-item${pickup === "Custom Location" ? " active" : ""}`} onClick={() => { setPickup("Custom Location"); setPickupOpen(false); }}>📍 Custom Location</div>
           </div>
         </div>
         <div className="field-swap">⇌</div>
-        <div className="form-field">
+        <div className="form-field" id="destFieldWrapper">
           <label>Destination</label>
-          <div className="field-input" id="destFieldWrapper">
+          <div className="field-input">
             <span className="field-icon">📍</span>
-            <input type="text" id="destInput" placeholder="Where are you going?" autoComplete="off" />
+            <input 
+              type="text" 
+              placeholder="Where are you going?" 
+              autoComplete="off" 
+              value={destSearch}
+              onChange={(e) => {
+                setDestSearch(e.target.value);
+                setDestOpen(true);
+              }}
+              onFocus={() => { setDestOpen(true); setPickupOpen(false); }}
+            />
           </div>
-          <div className="field-dropdown" id="destDropdown">
-            <div className="dropdown-item">🌆 Downtown Denver <span className="dest-dist">~45 min</span></div>
-            <div className="dropdown-item">🏡 Cherry Creek <span className="dest-dist">~50 min</span></div>
-            <div className="dropdown-item">⛰ Boulder <span className="dest-dist">~1h 15min</span></div>
-            <div className="dropdown-item">🌇 Aurora <span className="dest-dist">~35 min</span></div>
-            <div className="dropdown-item">🏘 Lakewood <span className="dest-dist">~55 min</span></div>
-            <div className="dropdown-item">🏙 Centennial <span className="dest-dist">~55 min</span></div>
-            <div className="dropdown-item">🏢 Englewood <span className="dest-dist">~50 min</span></div>
-            <div className="dropdown-item">🏔 Colorado Springs <span className="dest-dist">~2h 10min</span></div>
-            <div className="dropdown-item">⛷ Vail <span className="dest-dist">~2h 30min</span></div>
-            <div className="dropdown-item">🌿 Aspen <span className="dest-dist">~4h</span></div>
+          <div className={`field-dropdown${destOpen ? " open" : ""}`}>
+            {destItems
+              .filter(d => d.name.toLowerCase().includes(destSearch.toLowerCase()))
+              .map((d, i) => (
+                <div 
+                  key={i} 
+                  className="dropdown-item" 
+                  onClick={() => {
+                    setDestSearch(d.name);
+                    setDestOpen(false);
+                  }}
+                >
+                  {d.icon} {d.name} <span className="dest-dist">{d.time}</span>
+                </div>
+            ))}
+            {destItems.filter(d => d.name.toLowerCase().includes(destSearch.toLowerCase())).length === 0 && (
+              <div className="dropdown-item text-gray-400">No destinations found</div>
+            )}
           </div>
         </div>
       </div>
