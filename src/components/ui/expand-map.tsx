@@ -77,7 +77,7 @@ export function ExpandRouteMap({
       exit={{ opacity: 0, scale: 0.9, y: 20 }}
     >
       <motion.div
-        className="relative overflow-hidden rounded-2xl bg-[#111] border border-[#d4af37]/30 shadow-2xl"
+        className="relative overflow-hidden rounded-2xl bg-[#111] border border-[#d4af37]/30 shadow-2xl flex flex-col"
         style={{
           rotateX: springRotateX,
           rotateY: springRotateY,
@@ -85,16 +85,17 @@ export function ExpandRouteMap({
         }}
         animate={{
           width: isExpanded ? (window.innerWidth < 600 ? 340 : 450) : 300,
-          height: isExpanded ? 400 : 160,
+          height: isExpanded ? 460 : 160,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-[#d4af37]/10 via-transparent to-[#111]" />
 
+        {/* MAP VISUAL SECTION (Top Half when expanded, full when collapsed) */}
         <AnimatePresence>
           {isExpanded && (
             <motion.div
-              className="absolute inset-0 pointer-events-none"
+              className="absolute top-0 left-0 right-0 h-[220px] pointer-events-none border-b border-white/5"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -102,22 +103,22 @@ export function ExpandRouteMap({
             >
               <div className="absolute inset-0 bg-[#0a0a0a]" />
 
-              <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                 {/* Decorative map grid lines */}
                 {[20, 40, 60, 80].map((y, i) => (
-                  <motion.line key={`h-${i}`} x1="0%" y1={`${y}%`} x2="100%" y2={`${y}%`} className="stroke-white/5" strokeWidth="1" />
+                  <motion.line key={`h-${i}`} x1="0" y1={y} x2="100" y2={y} className="stroke-white/5" strokeWidth="0.5" />
                 ))}
-                {[20, 40, 60, 80].map((x, i) => (
-                  <motion.line key={`v-${i}`} x1={`${x}%`} y1="0%" x2={`${x}%`} y2="100%" className="stroke-white/5" strokeWidth="1" />
+                {[10, 30, 50, 70, 90].map((x, i) => (
+                  <motion.line key={`v-${i}`} x1={x} y1="0" x2={x} y2="100" className="stroke-white/5" strokeWidth="0.5" />
                 ))}
                 
                 {/* Route Line */}
                 <motion.path
-                  d="M 50 320 Q 200 150 350 80"
+                  d="M 15 70 Q 50 20 85 40"
                   fill="none"
                   className="stroke-[#d4af37]"
-                  strokeWidth="3"
-                  strokeDasharray="6,6"
+                  strokeWidth="1.5"
+                  strokeDasharray="2,2"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 1.5, delay: 0.4, ease: "easeInOut" }}
@@ -126,20 +127,20 @@ export function ExpandRouteMap({
 
               {/* Origin Marker */}
               <motion.div
-                className="absolute left-[35px] bottom-[65px] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1"
+                className="absolute left-[15%] top-[70%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", delay: 0.5 }}
               >
-                <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center backdrop-blur-sm">
+                <div className="w-8 h-8 rounded-full bg-[#111] border border-white/20 flex items-center justify-center shadow-lg">
                   <Plane className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-[10px] text-white/50 font-medium">DEN</span>
+                <span className="text-[10px] text-white/50 font-medium bg-black/50 px-1 rounded">DEN</span>
               </motion.div>
 
               {/* Destination Marker */}
               <motion.div
-                className="absolute right-[85px] top-[95px] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1"
+                className="absolute left-[85%] top-[40%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", delay: 1.5 }}
@@ -150,15 +151,15 @@ export function ExpandRouteMap({
                     animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   />
-                  <div className="relative w-8 h-8 rounded-full bg-[#d4af37] border-2 border-white flex items-center justify-center shadow-lg shadow-[#d4af37]/30">
+                  <div className="relative w-8 h-8 rounded-full bg-[#d4af37] border-2 border-[#111] flex items-center justify-center shadow-lg shadow-[#d4af37]/30">
                     <MapPin className="w-4 h-4 text-black" fill="currentColor" />
                   </div>
                 </div>
               </motion.div>
 
-              {/* Route Time Badge */}
+              {/* Route Time Badge in Map */}
               <motion.div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#161616] border border-[#d4af37]/30 px-3 py-1.5 rounded-full shadow-xl flex items-center gap-2"
+                className="absolute left-[50%] top-[20%] -translate-x-1/2 -translate-y-1/2 bg-[#161616] border border-[#d4af37]/30 px-3 py-1.5 rounded-full shadow-xl flex items-center gap-2"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.8 }}
@@ -166,17 +167,18 @@ export function ExpandRouteMap({
                 <Navigation className="w-3 h-3 text-[#d4af37]" />
                 <span className="text-xs text-[#d4af37] font-medium tracking-wide">{time}</span>
               </motion.div>
-
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-80" />
+              
+              <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent opacity-100 h-8 bottom-0 top-auto" />
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div className="relative z-10 h-full flex flex-col justify-between p-5 sm:p-6">
+        {/* TEXT CONTENT SECTION (Bottom Half) */}
+        <div className={`relative z-10 flex flex-col justify-between p-5 sm:p-6 transition-all duration-500 ${isExpanded ? 'mt-[220px] h-[240px]' : 'h-full'}`}>
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <motion.div
-                className="w-10 h-10 rounded-full bg-[#d4af37]/10 flex items-center justify-center"
+                className="w-10 h-10 rounded-full bg-[#d4af37]/10 flex items-center justify-center shrink-0"
                 animate={{ rotate: isExpanded ? 90 : 0 }}
               >
                 <Navigation className="w-4 h-4 text-[#d4af37]" />
@@ -184,7 +186,7 @@ export function ExpandRouteMap({
               <div>
                 <p className="text-[10px] text-white/50 uppercase tracking-widest font-semibold mb-0.5">Route Preview</p>
                 <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] shrink-0" />
                   <span className="text-xs text-white/80 font-medium">Live Traffic Checked</span>
                 </div>
               </div>
@@ -193,7 +195,7 @@ export function ExpandRouteMap({
             {onClose && (
               <button 
                 onClick={(e) => { e.stopPropagation(); onClose(); }}
-                className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors border border-white/10 pointer-events-auto"
+                className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors border border-white/10 pointer-events-auto shrink-0"
               >
                 <X className="w-4 h-4 text-white/70" />
               </button>
@@ -203,13 +205,13 @@ export function ExpandRouteMap({
           <div className="space-y-1">
             <div className="flex flex-col gap-1 mb-3">
               <div className="flex items-center gap-2 text-sm text-white/60">
-                <Plane className="w-3.5 h-3.5" />
-                <span>{origin}</span>
+                <Plane className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">{origin}</span>
               </div>
               <div className="w-px h-3 bg-white/20 ml-1.5" />
               <div className="flex items-center gap-2 text-lg sm:text-xl text-white font-semibold font-serif">
-                <MapPin className="w-4 h-4 text-[#d4af37]" />
-                <span>{destination}</span>
+                <MapPin className="w-4 h-4 text-[#d4af37] shrink-0" />
+                <span className="truncate">{destination}</span>
               </div>
             </div>
 
