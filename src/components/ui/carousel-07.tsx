@@ -178,12 +178,10 @@ export const CarouselStacked = () => {
             
             const activeIndex = (Math.round(scrollProgress.get()) % total + total) % total;
             const slide = slides[activeIndex];
-            if (typeof window !== "undefined" && (window as any).openRouteModal) {
-              const modal = document.getElementById("routeModal");
-              if (modal) {
-                modal.classList.add("open");
-                document.body.classList.add("modal-open");
-              }
+            if (typeof window !== "undefined" && (window as any).openReactRouteModal) {
+              (window as any).openReactRouteModal(slide.title, slide.time || "~1h", slide.description);
+            } else if (typeof window !== "undefined" && (window as any).openRouteModal) {
+              // Fallback to old script.js logic just in case
               (window as any).openRouteModal(slide.title, slide.time || "~1h", slide.description);
             }
           }}

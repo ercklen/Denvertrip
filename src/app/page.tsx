@@ -6,6 +6,7 @@ import CarouselStacked from "@/components/ui/carousel-07";
 import TestimonialsStack from "@/components/ui/testimonials-stack";
 import ColoradoCoverageMap from "@/components/ui/colorado-coverage-map";
 import HowItWorks from "@/components/ui/how-it-works";
+import { ExpandRouteMap } from "@/components/ui/expand-map";
 
 /* ─── Fleet Data ─── */
 const fleetData = {
@@ -76,7 +77,15 @@ export default function HomePage() {
   const [destSearch, setDestSearch] = useState("");
   const [destOpen, setDestOpen] = useState(false);
 
+  const [routeModalData, setRouteModalData] = useState<{dest: string, time: string, desc: string} | null>(null);
+
   React.useEffect(() => {
+    // Expose a global function so carousel and map can trigger the React Route Modal
+    (window as any).openReactRouteModal = (dest: string, time: string, desc: string) => {
+      setRouteModalData({ dest, time, desc });
+      document.body.classList.add("modal-open");
+    };
+
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (!target.closest('#pickupFieldWrapper')) {
@@ -801,61 +810,29 @@ export default function HomePage() {
   </div>
 </div>
 
-{/*  Route Preview Modal — populated by script.js (map/carousel interactions)  */}
-<div className="modal-overlay" id="routeModal">
-  <div className="modal-box modal-route">
-    <button
-      className="modal-close"
-      onClick={() => {
-        const m = document.getElementById("routeModal");
-        if (m) m.classList.remove("open");
+{/*  Route Preview Modal (React version powered by Framer Motion)  */}
+{routeModalData && (
+  <div 
+    className="modal-overlay open" 
+    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    onClick={(e) => {
+      if (e.target === e.currentTarget) {
+        setRouteModalData(null);
+        document.body.classList.remove("modal-open");
+      }
+    }}
+  >
+    <ExpandRouteMap 
+      destination={routeModalData.dest}
+      time={routeModalData.time}
+      description={routeModalData.desc}
+      onClose={() => {
+        setRouteModalData(null);
         document.body.classList.remove("modal-open");
       }}
-    >✕</button>
-    <p className="modal-eyebrow">Route Preview</p>
-    <h2 className="route-modal-title" id="routeTitle"></h2>
-    <div className="route-preview">
-      <div className="route-stop">
-        <div className="route-stop-icon origin">✈</div>
-        <div>
-          <p className="route-stop-label">Pickup</p>
-          <p className="route-stop-name">Denver International Airport (DEN)</p>
-        </div>
-      </div>
-      <div className="route-line-visual">
-        <div className="route-animated-line"></div>
-        <div className="route-time-badge" id="routeTime"></div>
-      </div>
-      <div className="route-stop">
-        <div className="route-stop-icon dest">📍</div>
-        <div>
-          <p className="route-stop-label">Destination</p>
-          <p className="route-stop-name" id="routeDestName"></p>
-        </div>
-      </div>
-    </div>
-    <p className="route-desc" id="routeDesc"></p>
-    <div className="modal-actions">
-      <button
-        className="btn-gold"
-        onClick={() => {
-          const m = document.getElementById("routeModal");
-          if (m) m.classList.remove("open");
-          document.body.classList.remove("modal-open");
-          scrollToPlanner();
-        }}
-      >Plan This Trip</button>
-      <button
-        className="btn-outline"
-        onClick={() => {
-          const m = document.getElementById("routeModal");
-          if (m) m.classList.remove("open");
-          document.body.classList.remove("modal-open");
-        }}
-      >Close</button>
-    </div>
+    />
   </div>
-</div>
+)}
 
 {/*  Inquiry Modal  */}
 <div
