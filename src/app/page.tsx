@@ -7,6 +7,7 @@ import TestimonialsStack from "@/components/ui/testimonials-stack";
 import ColoradoCoverageMap from "@/components/ui/colorado-coverage-map";
 import HowItWorks from "@/components/ui/how-it-works";
 import { ExpandRouteMap } from "@/components/ui/expand-map";
+import { RandomLetterSwap } from "@/components/ui/random-letter-swap";
 
 /* ─── Fleet Data ─── */
 const fleetData = {
@@ -143,12 +144,36 @@ export default function HomePage() {
       </div>
     </a>
     <ul className="nav-links" id="navLinks">
-      <li><a href="#airport-section">Airport Transfer</a></li>
-      <li><a href="#fleet-section">Fleet</a></li>
-      <li><a href="#destinations-section">Destinations</a></li>
-      <li><a href="#corporate-section">Corporate</a></li>
-      <li><a href="#occasions-section">Special Events</a></li>
-      <li><a href="#about-section">About</a></li>
+      <li>
+        <a href="#airport-section">
+          <RandomLetterSwap label="Airport Transfer" staggerDuration={0.02} />
+        </a>
+      </li>
+      <li>
+        <a href="#fleet-section">
+          <RandomLetterSwap label="Fleet" staggerDuration={0.02} />
+        </a>
+      </li>
+      <li>
+        <a href="#destinations-section">
+          <RandomLetterSwap label="Destinations" staggerDuration={0.02} />
+        </a>
+      </li>
+      <li>
+        <a href="#corporate-section">
+          <RandomLetterSwap label="Corporate" staggerDuration={0.02} />
+        </a>
+      </li>
+      <li>
+        <a href="#occasions-section">
+          <RandomLetterSwap label="Special Events" staggerDuration={0.02} />
+        </a>
+      </li>
+      <li>
+        <a href="#about-section">
+          <RandomLetterSwap label="About" staggerDuration={0.02} />
+        </a>
+      </li>
     </ul>
     <button className="btn-gold nav-cta" onClick={scrollToPlanner}>Plan Your Ride</button>
     <button className="hamburger" aria-label="Open menu" onClick={() => setMenuOpen(true)}>
