@@ -17,9 +17,9 @@ import { cn } from "@/lib/utils"
 const cardVariants = cva("absolute will-change-transform", {
   variants: {
     variant: {
-      dark: "flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-stone-700/50 bg-[#161616]/95 p-6 backdrop-blur-md text-white shadow-2xl",
+      dark: "flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-stone-700/50 bg-accent-foreground/80 p-6 backdrop-blur-md text-white shadow-2xl",
       light:
-        "flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-[#d4af37]/30 bg-[#121212]/95 p-6 backdrop-blur-md text-white shadow-2xl",
+        "flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-[#d4af37]/30 bg-[#161616]/95 p-6 backdrop-blur-md text-white shadow-2xl",
     },
   },
   defaultVariants: {
@@ -62,7 +62,7 @@ export const ContainerScroll: React.FC<
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: scrollRef,
-    offset: ["start start", "end end"],
+    offset: ["start center", "end end"],
   })
 
   return (
@@ -109,8 +109,8 @@ export const CardTransformed = React.forwardRef<
       arrayLength,
       index,
       incrementY = 10,
-      incrementZ = 12,
-      incrementRotation = 0,
+      incrementZ = 10,
+      incrementRotation = -index + 90,
       className,
       variant,
       style,
@@ -120,42 +120,37 @@ export const CardTransformed = React.forwardRef<
   ) => {
     const { scrollYProgress } = useContainerScrollContext()
 
-    // Map each card transition cleanly across the scroll progress
-    const segment = 1 / arrayLength
-    const start = Math.max(0, (index - 0.2) * segment)
-    const end = Math.min(1, (index + 0.8) * segment)
+    const start = index / (arrayLength + 1)
+    const end = (index + 1) / (arrayLength + 1)
+    const range = React.useMemo(() => [start, end], [start, end])
+    const rotateRange = [range[0] - 1.5, range[1] / 1.5]
 
-    // Top card slides up and fades away when scrolled past
-    const isLast = index === arrayLength - 1
-    const y = useTransform(
-      scrollYProgress,
-      [start, end],
-      isLast ? ["0%", "-30%"] : ["0%", "-140%"]
-    )
-    const opacity = useTransform(
-      scrollYProgress,
-      [start, start + segment * 0.4, end],
-      isLast ? [1, 1, 1] : [1, 1, 0]
-    )
-    const scale = useTransform(
-      scrollYProgress,
-      [0, start, end],
-      [1 - index * 0.04, 1, isLast ? 1 : 0.9]
-    )
-
+    const y = useTransform(scrollYProgress, range, ["0%", "-180%"])
+    const rotate = useTransform(scrollYProgress, rotateRange, [
+      incrementRotation,
+      0,
+    ])
     const transform = useMotionTemplate`translateZ(${
-      (arrayLength - index) * incrementZ
-    }px) translateY(${y}) scale(${scale})`
+      index * incrementZ
+    }px) translateY(${y}) rotate(${rotate}deg)`
+
+    const dx = useTransform(scrollYProgress, rotateRange, [4, 0])
+    const dy = useTransform(scrollYProgress, rotateRange, [4, 12])
+    const blur = useTransform(scrollYProgress, rotateRange, [2, 24])
+    const alpha = useTransform(scrollYProgress, rotateRange, [0.15, 0.2])
+    const filter =
+      variant === "light" 
+        ? useMotionTemplate`drop-shadow(${dx}px ${dy}px ${blur}px rgba(0,0,0,${alpha}))`
+        : "none"
 
     const cardStyle = {
       top: index * incrementY,
       transform,
-      opacity,
       backfaceVisibility: "hidden" as const,
-      zIndex: arrayLength - index + 10,
+      zIndex: (arrayLength - index + 5) * incrementZ,
+      filter,
       ...style,
     }
-
     return (
       <motion.div
         layout="position"

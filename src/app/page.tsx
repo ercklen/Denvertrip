@@ -471,7 +471,7 @@ export default function HomePage() {
 </section>
 
 {/*  ─── TESTIMONIALS ───  */}
-<section className="testimonials-section section-pad overflow-hidden" id="testimonials-section">
+<section className="testimonials-section section-pad" id="testimonials-section">
   <div className="container">
     <div className="section-header reveal">
       <p className="section-eyebrow">Client Reviews</p>
