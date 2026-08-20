@@ -788,14 +788,77 @@ export default function HomePage() {
   id="comingSoonModal"
   onClick={onBackdrop}
 >
-  <div className="modal-box">
+  <div className="modal-box" style={{ maxWidth: '460px' }}>
     <button className="modal-close" onClick={closeModal}>✕</button>
+
+    {/* Icon */}
     <div className="modal-icon">✦</div>
-    <h2 className="modal-title">Reservations Are<br />Coming Soon</h2>
-    <p className="modal-body">Online booking is currently being finalized. We&apos;re preparing a seamless reservation experience for our clients. In the meantime, explore our fleet and transportation options.</p>
+
+    {/* Title */}
+    <h2 className="modal-title" style={{ marginBottom: '8px' }}>
+      Reservations Are<br />Coming Soon
+    </h2>
+    <p className="modal-body" style={{ marginBottom: '28px' }}>
+      Our online booking system is being finalized. In the meantime, call us directly — our team is available 24/7 to arrange your private transfer.
+    </p>
+
+    {/* Phone CTA Block */}
+    <a
+      href="tel:+17205550192"
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '16px',
+        background: 'linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04))',
+        border: '1px solid rgba(201,168,76,0.35)',
+        borderRadius: '14px',
+        padding: '18px 22px',
+        marginBottom: '20px',
+        textDecoration: 'none',
+        cursor: 'pointer',
+        transition: 'all 0.25s ease',
+      }}
+      onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(201,168,76,0.7)')}
+      onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(201,168,76,0.35)')}
+    >
+      {/* Phone icon */}
+      <div style={{
+        width: '48px',
+        height: '48px',
+        borderRadius: '50%',
+        background: 'rgba(201,168,76,0.15)',
+        border: '1px solid rgba(201,168,76,0.3)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '20px',
+        flexShrink: 0,
+      }}>
+        📞
+      </div>
+      <div style={{ textAlign: 'left' }}>
+        <p style={{ fontSize: '0.65rem', letterSpacing: '0.15em', color: 'var(--gold)', textTransform: 'uppercase', fontWeight: 600, marginBottom: '4px' }}>
+          Call to Reserve — Available 24/7
+        </p>
+        <p style={{ fontSize: '1.35rem', fontWeight: 700, color: '#fff', fontFamily: 'var(--font-serif, serif)', letterSpacing: '0.05em' }}>
+          +1 (720) 555-0192
+        </p>
+        <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+          Speak with a reservation specialist
+        </p>
+      </div>
+    </a>
+
+    {/* Divider */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+      <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+      <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>or</span>
+      <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+    </div>
+
     <div className="modal-actions">
       <button className="btn-gold" onClick={() => { closeModal(); scrollToFleet(); }}>Explore Our Fleet</button>
-      <button className="btn-outline" onClick={() => { closeModal(); scrollToTop(); }}>Return Home</button>
+      <button className="btn-outline" onClick={closeModal}>Close</button>
     </div>
   </div>
 </div>
