@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { motion, type Transition } from "framer-motion";
+import { useState, useRef } from "react";
 
 const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -9,7 +8,6 @@ interface RandomLetterSwapProps {
   label: string;
   className?: string;
   staggerDuration?: number;
-  transition?: Transition;
   revealDirection?: "start" | "end" | "center" | "random";
 }
 
@@ -21,68 +19,82 @@ function getRevealOrder(length: number, direction: "start" | "end" | "center" | 
     return indices.sort((a, b) => Math.abs(a - mid) - Math.abs(b - mid));
   }
   if (direction === "random") return indices.sort(() => Math.random() - 0.5);
-  return indices; // "start"
+  return indices;
 }
 
 export function RandomLetterSwap({
   label,
   className = "",
-  staggerDuration = 0.025,
-  transition = { duration: 0.5, type: "spring" },
+  staggerDuration = 0.02,
   revealDirection = "random",
 }: RandomLetterSwapProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const [displayChars, setDisplayChars] = useState<string[]>(label.split(""));
+  const intervalsRef = useRef<ReturnType<typeof setInterval>[]>([]);
 
-  const animate = useCallback(() => {
+  const clearAllIntervals = () => {
+    intervalsRef.current.forEach(clearInterval);
+    intervalsRef.current = [];
+  };
+
+  const handleMouseEnter = () => {
+    clearAllIntervals();
+
     const chars = label.split("");
     const order = getRevealOrder(chars.length, revealDirection);
-    const intervals: ReturnType<typeof setTimeout>[] = [];
 
     order.forEach((charIndex, step) => {
       if (chars[charIndex] === " ") return;
-      let iterations = 0;
-      const maxIterations = 8;
 
-      const interval = setInterval(() => {
-        setDisplayChars((prev) => {
-          const next = [...prev];
-          if (iterations < maxIterations) {
-            next[charIndex] = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
-          } else {
-            next[charIndex] = chars[charIndex];
-            clearInterval(interval);
-          }
-          iterations++;
-          return next;
-        });
-      }, (staggerDuration * 1000 * step) / order.length + 40);
+      const delay = step * staggerDuration * 1000;
 
-      intervals.push(interval);
+      const timeout = setTimeout(() => {
+        let tick = 0;
+        const maxTicks = 6;
+
+        const interval = setInterval(() => {
+          setDisplayChars((prev) => {
+            const next = [...prev];
+            if (tick < maxTicks) {
+              next[charIndex] = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
+            } else {
+              next[charIndex] = chars[charIndex];
+              clearInterval(interval);
+            }
+            tick++;
+            return next;
+          });
+        }, 45);
+
+        intervalsRef.current.push(interval);
+      }, delay);
+
+      // store timeout cast as interval type so we can clear it too
+      intervalsRef.current.push(timeout as unknown as ReturnType<typeof setInterval>);
     });
-  }, [label, staggerDuration, revealDirection]);
+  };
+
+  const handleMouseLeave = () => {
+    clearAllIntervals();
+    setDisplayChars(label.split(""));
+  };
 
   return (
-    <motion.span
-      className={`inline-flex overflow-hidden ${className}`}
-      onHoverStart={() => {
-        setIsHovered(true);
-        animate();
-      }}
-      onHoverEnd={() => setIsHovered(false)}
+    <span
+      className={`inline-flex ${className}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       aria-label={label}
+      style={{ whiteSpace: "nowrap" }}
     >
       {displayChars.map((char, i) => (
-        <motion.span
+        <span
           key={i}
           className="inline-block"
-          style={{ minWidth: char === " " ? "0.3em" : undefined }}
-          animate={isHovered ? { y: 0 } : { y: 0 }}
-          transition={transition}
+          style={{ minWidth: char === " " ? "0.35em" : undefined }}
         >
           {char === " " ? "\u00A0" : char}
-        </motion.span>
+        </span>
       ))}
-    </motion.span>
+    </span>
   );
 }
