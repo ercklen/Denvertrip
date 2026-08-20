@@ -26,7 +26,7 @@ const REAL_TESTIMONIALS = [
     location: "Corporate Travel / Cherry Creek",
     rating: 5,
     description:
-      "We rely on Denvertrip for all our executive board transportation between Denver Airport and our headquarters in Cherry Creek. Punctual, discreet, and exceptionally professional every single time.",
+      "We rely on DenveroTrip for all our executive board transportation between Denver Airport and our headquarters in Cherry Creek. Punctual, discreet, and exceptionally professional every single time.",
     avatarUrl:
       "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=80",
   },
@@ -46,7 +46,7 @@ const REAL_TESTIMONIALS = [
     location: "Breckenridge Event Chauffeur",
     rating: 5,
     description:
-      "Booked two vehicles for our wedding guests from DEN to Breckenridge. Flight delays were tracked automatically and drivers adjusted without any stress. Highly recommend Denvertrip!",
+      "Booked two vehicles for our wedding guests from DEN to Breckenridge. Flight delays were tracked automatically and drivers adjusted without any stress. Highly recommend DenveroTrip!",
     avatarUrl:
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80",
   },
