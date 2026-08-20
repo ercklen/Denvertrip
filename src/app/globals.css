@@ -422,7 +422,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .hero {
   position: relative;
   height: 100vh;
-  min-height: 700px;
+  min-height: 800px;
   display: flex;
   align-items: flex-end;
   overflow: hidden;
@@ -461,12 +461,12 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   left: 0;
   right: 0;
   z-index: 2;
-  padding: 20px 40px 120px;
+  padding: 40px 40px 100px;
   max-width: 1280px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;  /* push all text to the bottom */
+  justify-content: center;
 }
 
 .hero-eyebrow {
