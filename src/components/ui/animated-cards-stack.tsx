@@ -17,9 +17,9 @@ import { cn } from "@/lib/utils"
 const cardVariants = cva("absolute will-change-transform", {
   variants: {
     variant: {
-      dark: "flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-stone-700/50 bg-accent-foreground/80 p-6 backdrop-blur-md text-white shadow-2xl",
+      dark: "flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-[#c9a84c]/25 bg-[#141414] p-6 text-white shadow-2xl",
       light:
-        "flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-[#d4af37]/30 bg-[#161616]/95 p-6 backdrop-blur-md text-white shadow-2xl",
+        "flex size-full flex-col items-center justify-center gap-6 rounded-2xl border border-[#c9a84c]/25 bg-[#141414] p-6 text-white shadow-2xl",
     },
   },
   defaultVariants: {
@@ -69,7 +69,7 @@ export const ContainerScroll: React.FC<
     <ContainerScrollContext.Provider value={{ scrollYProgress }}>
       <div
         ref={scrollRef}
-        className={cn("relative min-h-svh w-full", className)}
+        className={cn("relative min-h-svh w-full bg-transparent", className)}
         style={{ perspective: "1000px", ...style }}
         {...props}
       >
@@ -90,7 +90,7 @@ export const CardsContainer: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   return (
     <div
       ref={containerRef}
-      className={cn("relative", className)}
+      className={cn("relative bg-transparent", className)}
       style={{ perspective: "1000px", ...props.style }}
       {...props}
     >
@@ -172,7 +172,7 @@ export const ReviewStars = React.forwardRef<HTMLDivElement, ReviewProps>(
 
     return (
       <div
-        className={cn("flex items-center gap-2 text-[#d4af37]", className)}
+        className={cn("flex items-center gap-2 text-[#c9a84c]", className)}
         ref={ref}
         {...props}
       >
@@ -214,7 +214,7 @@ export const ReviewStars = React.forwardRef<HTMLDivElement, ReviewProps>(
           {[...Array(emptyStars)].map((_, index) => (
             <svg
               key={`empty-${index}`}
-              className="size-4 text-gray-600"
+              className="size-4 text-gray-700"
               fill="currentColor"
               viewBox="0 0 20 20"
             >

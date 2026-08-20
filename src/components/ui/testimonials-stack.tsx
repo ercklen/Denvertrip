@@ -54,10 +54,10 @@ const REAL_TESTIMONIALS = [
 
 export function TestimonialsStack() {
   return (
-    <div className="w-full bg-[#0a0a0a] text-white">
-      <ContainerScroll className="container mx-auto h-[320vh] max-w-4xl">
-        <div className="sticky left-0 top-0 h-svh w-full flex items-center justify-center py-12">
-          <CardsContainer className="mx-auto size-full h-[450px] w-[350px] sm:w-[400px]">
+    <div className="w-full bg-transparent text-white">
+      <ContainerScroll className="container mx-auto h-[320vh] max-w-4xl bg-transparent">
+        <div className="sticky left-0 top-0 h-svh w-full flex items-center justify-center py-12 bg-transparent">
+          <CardsContainer className="mx-auto size-full h-[450px] w-[350px] sm:w-[400px] bg-transparent">
             {REAL_TESTIMONIALS.map((testimonial, index) => (
               <CardTransformed
                 arrayLength={REAL_TESTIMONIALS.length}
@@ -67,21 +67,21 @@ export function TestimonialsStack() {
                 role="article"
                 aria-labelledby={`card-${testimonial.id}-title`}
                 aria-describedby={`card-${testimonial.id}-content`}
-                className="bg-[#141414]/95 border border-[#d4af37]/40 rounded-2xl shadow-2xl p-6 sm:p-8 flex flex-col justify-between"
+                className="bg-[#141414] border border-[#c9a84c]/25 rounded-2xl shadow-2xl p-6 sm:p-8 flex flex-col justify-between"
               >
                 <div className="flex flex-col items-center space-y-4 text-center">
                   <ReviewStars rating={testimonial.rating} />
-                  <div className="mx-auto w-full text-base sm:text-lg text-stone-200 font-light italic">
+                  <div className="mx-auto w-full text-base sm:text-lg text-[#e8e0d0] font-light italic">
                     <blockquote>"{testimonial.description}"</blockquote>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 pt-4 border-t border-white/10 mt-2">
-                  <Avatar className="size-12 border-2 border-[#d4af37]">
+                  <Avatar className="size-12 border-2 border-[#c9a84c]">
                     <AvatarImage
                       src={testimonial.avatarUrl}
                       alt={`Portrait of ${testimonial.name}`}
                     />
-                    <AvatarFallback className="bg-[#1f1f1f] text-[#d4af37] font-bold">
+                    <AvatarFallback className="bg-[#1f1f1f] text-[#c9a84c] font-bold">
                       {testimonial.name
                         .split(" ")
                         .map((n) => n[0])
@@ -92,7 +92,7 @@ export function TestimonialsStack() {
                     <span className="block text-base font-semibold text-white font-serif tracking-tight">
                       {testimonial.name}
                     </span>
-                    <span className="block text-xs text-[#b89535]">
+                    <span className="block text-xs text-[#c9a84c]">
                       {testimonial.location}
                     </span>
                   </div>
@@ -102,7 +102,7 @@ export function TestimonialsStack() {
           </CardsContainer>
         </div>
       </ContainerScroll>
-      <p className="text-center text-xs text-[#b89535] uppercase tracking-widest -mt-16 pb-8">
+      <p className="text-center text-xs text-[#c9a84c] uppercase tracking-widest -mt-16 pb-8">
         ↓ Scroll down to reveal all reviews ↓
       </p>
     </div>
