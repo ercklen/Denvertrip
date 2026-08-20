@@ -5,6 +5,7 @@ import Script from "next/script";
 import CarouselStacked from "@/components/ui/carousel-07";
 import TestimonialsStack from "@/components/ui/testimonials-stack";
 import ColoradoCoverageMap from "@/components/ui/colorado-coverage-map";
+import HowItWorks from "@/components/ui/how-it-works";
 
 export default function HomePage() {
   return (
@@ -388,45 +389,15 @@ export default function HomePage() {
 </section>
 
 {/*  ─── HOW IT WORKS ───  */}
-<section className="how-section section-pad">
+<section className="how-section section-pad" id="how-it-works-section">
   <div className="container">
     <div className="section-header reveal">
       <p className="section-eyebrow">The Process</p>
       <h2 className="section-heading">Three Steps to<br /><em>Your Journey.</em></h2>
+      <p className="section-sub">Simple, transparent, and effortlessly arranged airport and private chauffeur travel.</p>
     </div>
-    <div className="steps-grid">
-      <div className="step-card reveal">
-        <div className="step-num">01</div>
-        <div className="step-icon-wrap">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        </div>
-        <h3>Choose Your Destination</h3>
-        <p>Tell us where you're going. From downtown Denver to the Colorado mountains, we cover the entire region.</p>
-      </div>
-      <div className="step-connector reveal">
-        <div className="connector-line"></div>
-        <div className="connector-dot"></div>
-      </div>
-      <div className="step-card reveal">
-        <div className="step-num">02</div>
-        <div className="step-icon-wrap">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        </div>
-        <h3>Select Your Vehicle</h3>
-        <p>Choose the vehicle class that fits your journey — luxury SUV, executive sedan, or Sprinter van.</p>
-      </div>
-      <div className="step-connector reveal">
-        <div className="connector-line"></div>
-        <div className="connector-dot"></div>
-      </div>
-      <div className="step-card reveal">
-        <div className="step-num">03</div>
-        <div className="step-icon-wrap">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <h3>Ride in Comfort</h3>
-        <p>Enjoy a premium chauffeur experience from door to door. Your comfort is our commitment.</p>
-      </div>
+    <div className="w-full">
+      <HowItWorks />
     </div>
   </div>
 </section>
