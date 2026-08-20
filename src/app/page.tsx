@@ -4,6 +4,7 @@ import React from "react";
 import Script from "next/script";
 import CarouselStacked from "@/components/ui/carousel-07";
 import TestimonialsStack from "@/components/ui/testimonials-stack";
+import ColoradoCoverageMap from "@/components/ui/colorado-coverage-map";
 
 export default function HomePage() {
   return (
@@ -460,12 +461,10 @@ export default function HomePage() {
     <div className="section-header reveal">
       <p className="section-eyebrow">Service Routes</p>
       <h2 className="section-heading">Denver &amp; Colorado<br /><em>Coverage Map.</em></h2>
-      <p className="section-sub">Click any destination to preview the route from DEN.</p>
+      <p className="section-sub">Interactive network connecting Denver International Airport (DEN) to mountain ski resorts, universities, and cities.</p>
     </div>
-    <div className="map-container reveal">
-      <div className="map-canvas" id="mapCanvas">
-        <img src="coverage_map_1786506831467.jpg" alt="Denver and Colorado Coverage Map" className="map-photo" />
-      </div>
+    <div className="w-full mt-8">
+      <ColoradoCoverageMap />
     </div>
   </div>
 </section>
