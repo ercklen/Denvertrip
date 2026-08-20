@@ -3,17 +3,40 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Denvertrip | Luxury Airport Transportation Denver",
+  title: "Denvero | Luxury Airport Transportation Denver",
   description: "Premium private airport transportation from Denver International Airport (DEN) to destinations throughout Denver and Colorado. Luxury SUVs, executive sedans, and stretch limousines.",
-  metadataBase: new URL("https://denvertrip.com"),
+  keywords: ["Denver airport transportation", "luxury car service Denver", "private transfer DEN", "Vail transportation", "Aspen car service", "Colorado executive transport", "Denvero"],
+  authors: [{ name: "Denvero" }],
+  creator: "Denvero",
+  publisher: "Denvero",
+  metadataBase: new URL("https://denvero.com"),
   alternates: {
-    canonical: "https://denvertrip.com/",
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   openGraph: {
-    title: "Denvertrip | Luxury Airport Transportation",
+    title: "Denvero | Luxury Airport Transportation",
     description: "Premium private airport transportation from Denver International Airport.",
-    url: "https://denvertrip.com/",
+    url: "https://denvero.com/",
+    siteName: "Denvero",
+    locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Denvero | Luxury Airport Transportation",
+    description: "Premium private airport transportation from Denver International Airport.",
+    creator: "@denvero",
   },
 };
 

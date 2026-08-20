@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://denvertrip.com/sitemap.xml
+Sitemap: https://denvero.com/sitemap.xml
