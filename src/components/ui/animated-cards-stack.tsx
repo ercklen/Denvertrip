@@ -62,7 +62,7 @@ export const ContainerScroll: React.FC<
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: scrollRef,
-    offset: ["start center", "end end"],
+    offset: ["start start", "end end"],
   })
 
   return (
@@ -109,8 +109,8 @@ export const CardTransformed = React.forwardRef<
       arrayLength,
       index,
       incrementY = 10,
-      incrementZ = 10,
-      incrementRotation = -index + 90,
+      incrementZ = 12,
+      incrementRotation = 0,
       className,
       variant,
       style,
@@ -120,37 +120,42 @@ export const CardTransformed = React.forwardRef<
   ) => {
     const { scrollYProgress } = useContainerScrollContext()
 
-    const start = index / (arrayLength + 1)
-    const end = (index + 1) / (arrayLength + 1)
-    const range = React.useMemo(() => [start, end], [start, end])
-    const rotateRange = [range[0] - 1.5, range[1] / 1.5]
+    // Map each card transition cleanly across the scroll progress
+    const segment = 1 / arrayLength
+    const start = Math.max(0, (index - 0.2) * segment)
+    const end = Math.min(1, (index + 0.8) * segment)
 
-    const y = useTransform(scrollYProgress, range, ["0%", "-180%"])
-    const rotate = useTransform(scrollYProgress, rotateRange, [
-      incrementRotation,
-      0,
-    ])
+    // Top card slides up and fades away when scrolled past
+    const isLast = index === arrayLength - 1
+    const y = useTransform(
+      scrollYProgress,
+      [start, end],
+      isLast ? ["0%", "-30%"] : ["0%", "-140%"]
+    )
+    const opacity = useTransform(
+      scrollYProgress,
+      [start, start + segment * 0.4, end],
+      isLast ? [1, 1, 1] : [1, 1, 0]
+    )
+    const scale = useTransform(
+      scrollYProgress,
+      [0, start, end],
+      [1 - index * 0.04, 1, isLast ? 1 : 0.9]
+    )
+
     const transform = useMotionTemplate`translateZ(${
-      index * incrementZ
-    }px) translateY(${y}) rotate(${rotate}deg)`
-
-    const dx = useTransform(scrollYProgress, rotateRange, [4, 0])
-    const dy = useTransform(scrollYProgress, rotateRange, [4, 12])
-    const blur = useTransform(scrollYProgress, rotateRange, [2, 24])
-    const alpha = useTransform(scrollYProgress, rotateRange, [0.15, 0.2])
-    const filter =
-      variant === "light" 
-        ? useMotionTemplate`drop-shadow(${dx}px ${dy}px ${blur}px rgba(0,0,0,${alpha}))`
-        : "none"
+      (arrayLength - index) * incrementZ
+    }px) translateY(${y}) scale(${scale})`
 
     const cardStyle = {
       top: index * incrementY,
       transform,
+      opacity,
       backfaceVisibility: "hidden" as const,
-      zIndex: (arrayLength - index) * incrementZ,
-      filter,
+      zIndex: arrayLength - index + 10,
       ...style,
     }
+
     return (
       <motion.div
         layout="position"

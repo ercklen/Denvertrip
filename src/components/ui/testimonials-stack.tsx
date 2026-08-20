@@ -54,23 +54,23 @@ const REAL_TESTIMONIALS = [
 
 export function TestimonialsStack() {
   return (
-    <div className="w-full bg-[#0a0a0a] text-white py-8">
-      <ContainerScroll className="container mx-auto h-[260vh] max-w-4xl">
-        <div className="sticky left-0 top-16 h-[85vh] w-full flex items-center justify-center">
+    <div className="w-full bg-[#0a0a0a] text-white py-4">
+      <ContainerScroll className="container mx-auto h-[350vh] max-w-4xl">
+        <div className="sticky left-0 top-20 h-[80vh] w-full flex items-center justify-center">
           <CardsContainer className="mx-auto size-full h-[460px] max-w-[380px] sm:max-w-[440px]">
             {REAL_TESTIMONIALS.map((testimonial, index) => (
               <CardTransformed
                 arrayLength={REAL_TESTIMONIALS.length}
                 key={testimonial.id}
                 variant="light"
-                index={index + 1}
+                index={index}
                 role="article"
-                className="bg-[#141414]/95 border border-[#d4af37]/35 rounded-2xl shadow-2xl p-6 sm:p-8 flex flex-col justify-between"
+                className="bg-[#141414]/98 border border-[#d4af37]/40 rounded-2xl shadow-2xl p-6 sm:p-8 flex flex-col justify-between"
               >
                 <div className="flex flex-col space-y-4">
                   <div className="flex items-center justify-between">
                     <ReviewStars rating={testimonial.rating} />
-                    <span className="text-[11px] font-semibold text-[#d4af37] uppercase tracking-wider bg-[#d4af37]/10 px-2.5 py-1 rounded-full border border-[#d4af37]/20">
+                    <span className="text-[11px] font-semibold text-[#d4af37] uppercase tracking-wider bg-[#d4af37]/10 px-2.5 py-1 rounded-full border border-[#d4af37]/25">
                       Verified Client
                     </span>
                   </div>
@@ -107,7 +107,7 @@ export function TestimonialsStack() {
         </div>
       </ContainerScroll>
       <p className="text-center text-xs text-[#b89535] uppercase tracking-widest mt-2">
-        ↓ Scroll down to reveal client stories ↓
+        ↓ Scroll down to reveal all {REAL_TESTIMONIALS.length} reviews ↓
       </p>
     </div>
   )
