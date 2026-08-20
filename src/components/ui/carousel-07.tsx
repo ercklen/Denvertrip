@@ -80,11 +80,11 @@ const getCarouselConfig = (width: number): CarouselConfig => {
     return {
       distanceDivisor: 100,
       velocityDivisor: 450,
-      sensitivity: 150,
-      xMultiplier: 45,
-      yMultiplier: 12,
-      rotationMultiplier: 5,
-      scaleReduction: 0.08,
+      sensitivity: 120,
+      xMultiplier: 60,
+      yMultiplier: 10,
+      rotationMultiplier: 4,
+      scaleReduction: 0.07,
     };
   }
   if (width < 1024) {
@@ -112,7 +112,6 @@ const getCarouselConfig = (width: number): CarouselConfig => {
 export const CarouselStacked = () => {
   const scrollProgress = useMotionValue(0);
   const startProgress = React.useRef(0);
-  const dragTotal = React.useRef(0);
   const [windowWidth, setWindowWidth] = React.useState(0);
 
   const total = slides.length;
@@ -158,35 +157,17 @@ export const CarouselStacked = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-full py-6 select-none">
-      <div className="relative w-full max-w-6xl h-80 sm:h-96 lg:h-112 flex items-center justify-center">
+      <div className="relative w-full max-w-6xl h-[320px] sm:h-96 lg:h-[450px] flex items-center justify-center">
         {/* Transparent Drag Surface */}
         <motion.div
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
-          onPointerDown={() => {
-            dragTotal.current = 0;
-          }}
-          onDragStart={() => {
-            handleDragStart();
-          }}
+          onDragStart={handleDragStart}
           onDrag={(_, info) => {
-            dragTotal.current = Math.abs(info.offset.x);
             const delta = -info.delta.x / config.sensitivity;
             scrollProgress.set(scrollProgress.get() + delta);
           }}
           onDragEnd={handleDragEnd}
-          onTap={() => {
-            if (dragTotal.current > 5) return; // Cancel tap if it was actually a drag swipe
-            
-            const activeIndex = (Math.round(scrollProgress.get()) % total + total) % total;
-            const slide = slides[activeIndex];
-            if (typeof window !== "undefined" && (window as any).openReactRouteModal) {
-              (window as any).openReactRouteModal(slide.title, slide.time || "~1h", slide.description);
-            } else if (typeof window !== "undefined" && (window as any).openRouteModal) {
-              // Fallback to old script.js logic just in case
-              (window as any).openRouteModal(slide.title, slide.time || "~1h", slide.description);
-            }
-          }}
           className="absolute inset-0 z-50 cursor-grab active:cursor-grabbing"
         />
 
@@ -201,11 +182,9 @@ export const CarouselStacked = () => {
           />
         ))}
       </div>
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-4 text-xs text-[#b89535] uppercase tracking-widest">
-        <span>← Swipe to Explore →</span>
-        <span className="hidden sm:block">•</span>
-        <span>Tap to View Route Preview</span>
-      </div>
+      <p className="text-xs text-[#b89535] mt-4 uppercase tracking-widest">
+        ← Swipe to Explore Destinations →
+      </p>
     </div>
   );
 };
@@ -250,6 +229,9 @@ const Card = ({ slide, index, total, progress, config }: CardProps) => {
     Math.round(100 - Math.abs(o) * 10),
   );
 
+  // Title and description are always visible on active card, fade slightly on side cards
+  const textOpacity = useTransform(offset, [-1, -0.3, 0, 0.3, 1], [0.5, 0.7, 1, 0.7, 0.5]);
+
   return (
     <motion.div
       style={{
@@ -262,7 +244,8 @@ const Card = ({ slide, index, total, progress, config }: CardProps) => {
       }}
       className={cn(
         "absolute rounded-2xl overflow-hidden bg-[#161616] border border-[#d4af37]/30 shadow-2xl group pointer-events-none",
-        "w-44 h-64 sm:w-60 sm:h-84 lg:w-72 lg:h-96",
+        // Larger cards on mobile for readability
+        "w-56 h-72 sm:w-64 sm:h-88 lg:w-72 lg:h-96",
       )}
     >
       <img
@@ -282,30 +265,28 @@ const Card = ({ slide, index, total, progress, config }: CardProps) => {
         className="absolute inset-0 bg-black pointer-events-none"
       />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
 
       <Badge className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2.5 py-1 rounded-full bg-[#d4af37] text-black text-[10px] font-bold uppercase tracking-widest shadow-md">
         {slide.badge}
       </Badge>
 
-      <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-5 sm:right-5 text-white text-left">
-        <motion.p
-          style={{
-            opacity: useTransform(offset, [-0.5, 0, 0.5], [0, 1, 0]),
-          }}
-          className="text-base sm:text-lg lg:text-xl font-bold leading-tight mb-1 text-[#f5f5f5] drop-shadow-md font-serif"
-        >
-          {slide.title}
-        </motion.p>
-        <motion.p
-          style={{
-            opacity: useTransform(offset, [-0.5, 0, 0.5], [0, 1, 0]),
-          }}
-          className="text-xs text-white/80 line-clamp-2 font-normal"
-        >
-          {slide.description}
-        </motion.p>
+      {/* Drive time chip */}
+      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 px-2 py-0.5 rounded-full bg-black/60 border border-white/20 text-[10px] text-white/80 font-medium backdrop-blur-sm">
+        {slide.time}
       </div>
+
+      <motion.div
+        style={{ opacity: textOpacity }}
+        className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 text-white text-left"
+      >
+        <p className="text-base sm:text-lg font-bold leading-tight mb-1 text-white drop-shadow-md font-serif">
+          {slide.title}
+        </p>
+        <p className="text-xs text-white/80 line-clamp-2 font-normal leading-relaxed">
+          {slide.description}
+        </p>
+      </motion.div>
     </motion.div>
   );
 };
