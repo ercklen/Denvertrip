@@ -16,22 +16,26 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 // ═══════════════════════════════════════════════
-// MOBILE MENU
+// MOBILE MENU (vanilla fallback — React handles this now)
 // ═══════════════════════════════════════════════
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 const mobileClose = document.getElementById('mobileClose');
 
-hamburger.addEventListener('click', () => {
-  mobileMenu.classList.add('open');
-  document.body.classList.add('modal-open');
-});
-
-mobileClose.addEventListener('click', closeMobileMenu);
-
 function closeMobileMenu() {
-  mobileMenu.classList.remove('open');
+  if (mobileMenu) mobileMenu.classList.remove('open');
   document.body.classList.remove('modal-open');
+}
+
+if (hamburger && mobileMenu) {
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.add('open');
+    document.body.classList.add('modal-open');
+  });
+}
+
+if (mobileClose) {
+  mobileClose.addEventListener('click', closeMobileMenu);
 }
 
 // ═══════════════════════════════════════════════
