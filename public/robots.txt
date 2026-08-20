@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://denvero.com/sitemap.xml
+Sitemap: https://denverolimousine.com/sitemap.xml

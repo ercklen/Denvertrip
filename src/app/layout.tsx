@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Denvero" }],
   creator: "Denvero",
   publisher: "Denvero",
-  metadataBase: new URL("https://denvero.com"),
+  metadataBase: new URL("https://denverolimousine.com"),
   alternates: {
     canonical: "/",
   },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Denvero | Luxury Airport Transportation",
     description: "Premium private airport transportation from Denver International Airport.",
-    url: "https://denvero.com/",
+    url: "https://denverolimousine.com/",
     siteName: "Denvero",
     locale: "en_US",
     type: "website",
