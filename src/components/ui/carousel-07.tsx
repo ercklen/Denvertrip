@@ -17,6 +17,7 @@ interface Slide {
   title: string;
   description: string;
   badge: string;
+  time?: string;
 }
 
 const slides: Slide[] = [
@@ -25,36 +26,42 @@ const slides: Slide[] = [
     title: "Vail & Beaver Creek",
     description: "World-class mountain resort transfers with luxury all-weather 4WD SUVs.",
     badge: "Ski Resort",
+    time: "~2h 30min",
   },
   {
     image: "/dest_aspen_1786508288136.jpg",
     title: "Aspen & Snowmass",
     description: "Premier private chauffeur service to Aspen's luxury resorts and private residences.",
     badge: "Executive",
+    time: "~4h",
   },
   {
     image: "/dest_breckenridge_1786508308049.jpg",
     title: "Breckenridge & Summit",
     description: "Direct airport transfers to Breckenridge, Keystone, and Copper Mountain.",
     badge: "Mountain",
+    time: "~1h 45min",
   },
   {
     image: "/dest_downtown_denver_1786503992679.jpg",
     title: "Downtown Denver",
     description: "Corporate travel, hotel transfers, and luxury transportation across the Denver Metro.",
     badge: "Metro & DIA",
+    time: "~45 min",
   },
   {
     image: "/dest_boulder_1786508277820.jpg",
     title: "Boulder & Flatirons",
     description: "Executive and university transfers between DIA and Boulder with premium comfort.",
     badge: "VIP Service",
+    time: "~1h 15min",
   },
   {
     image: "/dest_colorado_springs_1786508297951.jpg",
     title: "Colorado Springs",
     description: "Long-distance luxury chauffeured rides to The Broadmoor and Garden of the Gods.",
     badge: "Long Distance",
+    time: "~2h 10min",
   },
 ];
 
@@ -161,6 +168,18 @@ export const CarouselStacked = () => {
             scrollProgress.set(scrollProgress.get() + delta);
           }}
           onDragEnd={handleDragEnd}
+          onTap={() => {
+            const activeIndex = (Math.round(scrollProgress.get()) % total + total) % total;
+            const slide = slides[activeIndex];
+            if (typeof window !== "undefined" && (window as any).openRouteModal) {
+              const modal = document.getElementById("routeModal");
+              if (modal) {
+                modal.classList.add("open");
+                document.body.classList.add("modal-open");
+              }
+              (window as any).openRouteModal(slide.title, slide.time || "~1h", slide.description);
+            }
+          }}
           className="absolute inset-0 z-50 cursor-grab active:cursor-grabbing"
         />
 
@@ -175,9 +194,11 @@ export const CarouselStacked = () => {
           />
         ))}
       </div>
-      <p className="text-xs text-[#b89535] mt-4 uppercase tracking-widest flex items-center gap-2">
-        <span>← Drag / Swipe Destinations →</span>
-      </p>
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-4 text-xs text-[#b89535] uppercase tracking-widest">
+        <span>← Swipe to Explore →</span>
+        <span className="hidden sm:block">•</span>
+        <span>Tap to View Route Preview</span>
+      </div>
     </div>
   );
 };
