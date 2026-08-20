@@ -9,7 +9,7 @@ import HowItWorks from "@/components/ui/how-it-works";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen w-full overflow-x-clip bg-[#0a0a0a] text-white">
       
 
 

@@ -71,23 +71,23 @@ interface CarouselConfig {
 const getCarouselConfig = (width: number): CarouselConfig => {
   if (width < 640) {
     return {
-      distanceDivisor: 120,
-      velocityDivisor: 500,
-      sensitivity: 180,
-      xMultiplier: 90,
-      yMultiplier: 20,
-      rotationMultiplier: 8,
-      scaleReduction: 0.06,
+      distanceDivisor: 100,
+      velocityDivisor: 450,
+      sensitivity: 150,
+      xMultiplier: 45,
+      yMultiplier: 12,
+      rotationMultiplier: 5,
+      scaleReduction: 0.08,
     };
   }
   if (width < 1024) {
     return {
-      distanceDivisor: 160,
-      velocityDivisor: 650,
-      sensitivity: 220,
-      xMultiplier: 130,
-      yMultiplier: 30,
-      rotationMultiplier: 10,
+      distanceDivisor: 150,
+      velocityDivisor: 600,
+      sensitivity: 200,
+      xMultiplier: 100,
+      yMultiplier: 25,
+      rotationMultiplier: 8,
       scaleReduction: 0.09,
     };
   }
@@ -234,7 +234,7 @@ const Card = ({ slide, index, total, progress, config }: CardProps) => {
       }}
       className={cn(
         "absolute rounded-2xl overflow-hidden bg-[#161616] border border-[#d4af37]/30 shadow-2xl group pointer-events-none",
-        "w-52 h-72 sm:w-64 sm:h-88 lg:w-72 lg:h-96",
+        "w-44 h-64 sm:w-60 sm:h-84 lg:w-72 lg:h-96",
       )}
     >
       <img

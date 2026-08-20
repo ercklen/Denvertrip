@@ -57,7 +57,7 @@ export function TestimonialsStack() {
     <div className="w-full bg-transparent text-white">
       <ContainerScroll className="container mx-auto h-[320vh] max-w-4xl bg-transparent">
         <div className="sticky left-0 top-0 h-svh w-full flex items-center justify-center py-12 bg-transparent">
-          <CardsContainer className="mx-auto size-full h-[450px] w-[350px] sm:w-[400px] bg-transparent">
+          <CardsContainer className="mx-auto size-full h-[450px] w-[90vw] max-w-[340px] sm:max-w-[400px] bg-transparent">
             {REAL_TESTIMONIALS.map((testimonial, index) => (
               <CardTransformed
                 arrayLength={REAL_TESTIMONIALS.length}
