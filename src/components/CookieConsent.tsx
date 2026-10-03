@@ -541,7 +541,7 @@ export default function CookieConsent() {
                 label="Mesure d'audience / Analytics"
                 desc="Nous permettent de comprendre comment vous utilisez le site afin de l'améliorer (Google Analytics via GTM)."
                 checked={prefs.analytics}
-                onChange={(v) => toggle("analytics") || setPrefs((p) => ({ ...p, analytics: v }))}
+                onChange={(v) => setPrefs((p) => ({ ...p, analytics: v }))}
               />
               <CategoryRow
                 label="Publicité"
