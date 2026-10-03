@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
+import CookieConsent from "@/components/CookieConsent";
 
 export const metadata: Metadata = {
   title: "Denvertrip | Luxury Airport Transportation Denver",
@@ -70,26 +71,34 @@ export default function RootLayout({
           rel="stylesheet"
         />
 
-        {/* Google Consent Mode v2 Default */}
+        {/* Google Consent Mode v2 Default — runs BEFORE any Google tag */}
         <Script id="google-consent-mode" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
-            var stored = localStorage.getItem('cookie_consent');
-            var analytics = 'denied', ads = 'denied';
-            if (stored) {
-              try {
-                var p = JSON.parse(stored);
-                if (p.analytics) analytics = 'granted';
-                if (p.advertising) ads = 'granted';
-              } catch(e){}
+            try {
+              var _c = localStorage.getItem('cookie_consent');
+              var _an = 'denied', _ad = 'denied', _pe = 'denied';
+              if (_c) {
+                var _p = JSON.parse(_c);
+                if (_p.analytics === true)     _an = 'granted';
+                if (_p.advertising === true)   _ad = 'granted';
+                if (_p.personalization === true) _pe = 'granted';
+              }
+              gtag('consent', 'default', {
+                'analytics_storage': _an,
+                'ad_storage':        _ad,
+                'ad_user_data':      _ad,
+                'ad_personalization':_pe
+              });
+            } catch(e) {
+              gtag('consent', 'default', {
+                'analytics_storage': 'denied',
+                'ad_storage':        'denied',
+                'ad_user_data':      'denied',
+                'ad_personalization':'denied'
+              });
             }
-            gtag('consent', 'default', {
-              'analytics_storage': analytics,
-              'ad_storage': ads,
-              'ad_user_data': ads,
-              'ad_personalization': ads
-            });
           `}
         </Script>
 
@@ -110,10 +119,9 @@ export default function RootLayout({
           src="https://www.googletagmanager.com/gtag/js?id=AW-18485059764"
           strategy="afterInteractive"
         />
+        {/* Google Ads config — gtag() already declared in consent-mode script above */}
         <Script id="google-ads-tag" strategy="afterInteractive">
           {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'AW-18485059764');
           `}
@@ -137,6 +145,9 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
+
+        {/* Cookie Consent Banner — Google Consent Mode v2 */}
+        <CookieConsent />
 
         {children}
 
