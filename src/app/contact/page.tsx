@@ -6,6 +6,12 @@ import Script from "next/script";
 export default function ContactPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
@@ -18,8 +24,8 @@ export default function ContactPage() {
     <a href="/" className="nav-logo">
       <span className="logo-icon">✦</span>
       <div className="logo-text">
-        <span className="logo-main">DENVER</span>
-        <span className="logo-sub">TRIP</span>
+        <span className="logo-main">DENVEROTRIP</span>
+        <span className="logo-sub">TRANSPORTATION</span>
       </div>
     </a>
     <ul className="nav-links" id="navLinks">
@@ -94,31 +100,50 @@ export default function ContactPage() {
   </div>
   
   <div className="contact-form-panel">
-    <form className="contact-form" >
-      <div className="field-row">
-        <div className="form-group">
-          <label>First Name</label>
-          <input type="text" required placeholder="Enter your first name" />
+    {submitted ? (
+      <div style={{ textAlign: "center", padding: "40px 20px" }}>
+        <div style={{ fontSize: "2.5rem", color: "var(--gold)", marginBottom: "16px" }}>✦</div>
+        <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.8rem", color: "var(--gold-light)", marginBottom: "12px" }}>
+          Thank You!
+        </h3>
+        <p style={{ color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: "24px" }}>
+          Your inquiry has been received. Our concierge team will reach out to you within 2 hours.
+        </p>
+        <button
+          type="button"
+          className="btn-gold"
+          onClick={() => setSubmitted(false)}
+        >
+          Send Another Message
+        </button>
+      </div>
+    ) : (
+      <form className="contact-form" onSubmit={handleSubmit}>
+        <div className="field-row">
+          <div className="form-group">
+            <label>First Name</label>
+            <input type="text" required placeholder="Enter your first name" />
+          </div>
+          <div className="form-group">
+            <label>Last Name</label>
+            <input type="text" required placeholder="Enter your last name" />
+          </div>
         </div>
         <div className="form-group">
-          <label>Last Name</label>
-          <input type="text" required placeholder="Enter your last name" />
+          <label>Email Address</label>
+          <input type="email" required placeholder="Enter your email" />
         </div>
-      </div>
-      <div className="form-group">
-        <label>Email Address</label>
-        <input type="email" required placeholder="Enter your email" />
-      </div>
-      <div className="form-group">
-        <label>Phone Number</label>
-        <input type="tel" placeholder="Enter your phone number (optional)" />
-      </div>
-      <div className="form-group">
-        <label>Message</label>
-        <textarea required placeholder="How can we assist you?"></textarea>
-      </div>
-      <button type="submit" className="btn-gold">Send Inquiry</button>
-    </form>
+        <div className="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="Enter your phone number (optional)" />
+        </div>
+        <div className="form-group">
+          <label>Message</label>
+          <textarea required placeholder="How can we assist you?"></textarea>
+        </div>
+        <button type="submit" className="btn-gold">Send Inquiry</button>
+      </form>
+    )}
   </div>
 </section>
 
@@ -129,8 +154,8 @@ export default function ContactPage() {
       <div className="footer-logo">
         <span className="logo-icon">✦</span>
         <div className="logo-text">
-          <span className="logo-main">DENVER</span>
-          <span className="logo-sub">TRIP</span>
+          <span className="logo-main">DENVEROTRIP</span>
+          <span className="logo-sub">TRANSPORTATION</span>
         </div>
       </div>
       <p className="footer-tagline">Luxury transportation throughout<br />Denver and Colorado.</p>
