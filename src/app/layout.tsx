@@ -3,13 +3,24 @@ import Script from "next/script";
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
 
+import { getLocalBusinessSchema } from "@/lib/schema";
+
 export const metadata: Metadata = {
-  title: "Denvertrip | Luxury Airport Transportation Denver",
-  description: "Premium private airport transportation from Denver International Airport (DEN) to destinations throughout Denver and Colorado. Luxury SUVs, executive sedans, and stretch limousines.",
-  keywords: ["Denver airport transportation", "luxury car service Denver", "private transfer DEN", "Vail transportation", "Aspen car service", "Colorado executive transport", "Denvertrip"],
-  authors: [{ name: "Denvertrip" }],
-  creator: "Denvertrip",
-  publisher: "Denvertrip",
+  title: "DenveroTrip | Luxury Airport Transportation & Chauffeur Service Denver",
+  description: "Premium private airport transportation from Denver International Airport (DEN) to downtown Denver, Vail, Aspen, Breckenridge, and Colorado ski resorts. Luxury SUVs, executive sedans, and Sprinter vans. 24/7 service.",
+  keywords: [
+    "Denver airport transportation",
+    "private car service Denver",
+    "luxury chauffeur Denver",
+    "Denver to Vail transfer",
+    "Denver to Aspen private car",
+    "Colorado ski resort transportation",
+    "executive car service Denver",
+    "DenveroTrip"
+  ],
+  authors: [{ name: "DenveroTrip" }],
+  creator: "DenveroTrip",
+  publisher: "DenveroTrip",
   metadataBase: new URL("https://denverotrip.com"),
   alternates: {
     canonical: "/",
@@ -32,10 +43,10 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Denvertrip | Luxury Airport Transportation",
+    title: "DenveroTrip | Luxury Airport & Mountain Transportation Denver",
     description: "Premium private airport transportation from Denver International Airport. Serving Denver, Vail, Aspen, and all of Colorado.",
     url: "https://denverotrip.com/",
-    siteName: "Denvertrip",
+    siteName: "DenveroTrip",
     locale: "en_US",
     type: "website",
     images: [
@@ -43,15 +54,15 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1024,
         height: 1024,
-        alt: "Denvertrip - Luxury Airport Transportation Denver",
+        alt: "DenveroTrip - Luxury Airport Transportation Denver",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Denvertrip | Luxury Airport Transportation",
+    title: "DenveroTrip | Luxury Airport Transportation",
     description: "Premium private airport transportation from Denver International Airport.",
-    creator: "@Denvertrip",
+    creator: "@DenveroTrip",
     images: ["/og-image.jpg"],
   },
 };
@@ -144,6 +155,14 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2612536732942195"
           crossOrigin="anonymous"
           strategy="afterInteractive"
+        />
+
+        {/* Global LocalBusiness Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(getLocalBusinessSchema()),
+          }}
         />
       </head>
       <body>

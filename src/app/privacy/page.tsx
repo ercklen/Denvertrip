@@ -1,107 +1,80 @@
-"use client";
+import type { Metadata } from "next";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
+import { BUSINESS_INFO } from "@/lib/business";
 
-import React from "react";
-import Script from "next/script";
+export const metadata: Metadata = {
+  title: "Privacy Policy | DenveroTrip Transportation",
+  description: "Privacy policy and client data protection practices for DenveroTrip luxury transportation and chauffeur services in Colorado.",
+  alternates: {
+    canonical: "/privacy",
+  },
+};
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      
+      <SiteHeader currentPath="/privacy" />
 
+      <main>
+        <header className="page-hero">
+          <div className="container">
+            <span className="section-eyebrow" style={{ color: "var(--gold-light)" }}>Legal &amp; Privacy</span>
+            <h1 className="page-title">Privacy Policy</h1>
+            <p style={{ color: "var(--text-muted)" }}>Last Updated: August 2026</p>
+          </div>
+        </header>
 
-{/*  ─── NAVIGATION ───  */}
-<nav className="navbar" id="navbar">
-  <div className="nav-inner">
-    <a href="/" className="nav-logo">
-      <span className="logo-icon">✦</span>
-      <div className="logo-text">
-        <span className="logo-main">DENVER</span>
-        <span className="logo-sub">TRIP</span>
-      </div>
-    </a>
-    <ul className="nav-links" id="navLinks">
-      <li><a href="/#airport-section">Airport Transfer</a></li>
-      <li><a href="/#fleet-section">Fleet</a></li>
-      <li><a href="/#destinations-section">Destinations</a></li>
-      <li><a href="/#corporate-section">Corporate</a></li>
-      <li><a href="/#about-section">About</a></li>
-    </ul>
-    <a href="/#planner-section" className="btn-gold nav-cta" style={{"textDecoration": "none", "textAlign": "center"}}>Plan Your Ride</a>
-  </div>
-</nav>
+        <section className="legal-content">
+          <h2>1. Introduction</h2>
+          <p>
+            At {BUSINESS_INFO.name}, we respect your privacy and are committed to protecting your personal data. This privacy policy informs you about how we handle and safeguard your information when you visit our website, request quotes, or reserve private chauffeur and transportation services.
+          </p>
 
-<header className="page-hero">  {/*  Google Consent Mode v2 Default  */}
-  
+          <h2>2. The Data We Collect About You</h2>
+          <p>
+            We may collect, store, and process contact and trip details necessary to deliver professional chauffeur and private airport transfer services:
+          </p>
+          <ul>
+            <li><strong>Identity Data:</strong> Full name, title, and passenger roster details.</li>
+            <li><strong>Contact Data:</strong> Mobile phone number and email address for dispatch updates and itinerary confirmations.</li>
+            <li><strong>Travel &amp; Flight Data:</strong> Airline flight numbers, arrival/departure dates, pickup/destination addresses, luggage counts, and vehicle preferences.</li>
+            <li><strong>Transaction Records:</strong> Invoices, itinerary confirmations, and booking history. We do not store sensitive payment card details directly on our servers.</li>
+          </ul>
 
+          <h2>3. How We Use Your Personal Data</h2>
+          <p>We process your data strictly to execute transportation contracts and provide customer care:</p>
+          <ul>
+            <li>To confirm pickup schedules, dispatch assigned chauffeurs, and track real-time flight arrivals at Denver International Airport (DEN).</li>
+            <li>To respond directly to inquiries submitted through our quote request and contact forms.</li>
+            <li>To fulfill statutory tax, commercial licensing, and transportation regulatory compliance in the State of Colorado.</li>
+          </ul>
 
+          <h2>4. Data Security</h2>
+          <p>
+            We implement industry-standard encryption, secure socket layers (SSL), and restricted internal access to protect customer records against unauthorized disclosure, loss, or alteration.
+          </p>
 
-  <h1 className="page-title">Privacy Policy</h1>
-  <p style={{"color": "var(--text-muted)"}}>Last Updated: August 2026</p>
-</header>
+          <h2>5. Third-Party Analytics &amp; Cookies</h2>
+          <p>
+            With your consent, our website uses Google Analytics 4 and Google Ads measurement tools in strict compliance with Google Consent Mode v2 to evaluate aggregate traffic and ad performance. We never share personally identifiable passenger details or booking content with third-party advertising networks.
+          </p>
 
-<section className="legal-content">
-  <h2>1. Introduction</h2>
-  <p>At Denvertrip, we respect your privacy and are committed to protecting your personal data. This privacy policy will inform you as to how we look after your personal data when you visit our website (regardless of where you visit it from) and tell you about your privacy rights and how the law protects you.</p>
-  
-  <h2>2. The Data We Collect About You</h2>
-  <p>Personal data, or personal information, means any information about an individual from which that person can be identified. We may collect, use, store and transfer different kinds of personal data about you which we have grouped together as follows:</p>
-  <ul>
-    <li><strong>Identity Data</strong> includes first name, last name, username or similar identifier, title.</li>
-    <li><strong>Contact Data</strong> includes billing address, delivery address, email address and telephone numbers.</li>
-    <li><strong>Transaction Data</strong> includes details about payments to and from you and other details of transportation services you have purchased from us.</li>
-  </ul>
+          <h2>6. Contact Privacy Concierge</h2>
+          <p>
+            For questions regarding this policy or to request updates to your saved information, contact us at{" "}
+            <a href={`mailto:${BUSINESS_INFO.email}`} style={{ color: "var(--gold)" }}>
+              {BUSINESS_INFO.email}
+            </a>{" "}
+            or call{" "}
+            <a href={`tel:${BUSINESS_INFO.phoneRaw}`} style={{ color: "var(--gold)" }}>
+              {BUSINESS_INFO.phone}
+            </a>.
+          </p>
+        </section>
+      </main>
 
-  <h2>3. How We Use Your Personal Data</h2>
-  <p>We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:</p>
-  <ul>
-    <li>Where we need to perform the contract we are about to enter into or have entered into with you (e.g., providing chauffeur services).</li>
-    <li>Where it is necessary for our legitimate interests (or those of a third party) and your interests and fundamental rights do not override those interests.</li>
-    <li>Where we need to comply with a legal obligation.</li>
-  </ul>
-
-  <h2>4. Data Security</h2>
-  <p>We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used or accessed in an unauthorised way, altered or disclosed. In addition, we limit access to your personal data to those employees, agents, contractors and other third parties who have a business need to know.</p>
-</section>
-
-{/*  ─── FOOTER ───  */}
-<footer className="footer">
-  <div className="footer-top">
-    <div className="footer-brand">
-      <div className="footer-logo">
-        <span className="logo-icon">✦</span>
-        <div className="logo-text">
-          <span className="logo-main">DENVER</span>
-          <span className="logo-sub">TRIP</span>
-        </div>
-      </div>
-      <p className="footer-tagline">Luxury transportation throughout<br />Denver and Colorado.</p>
-    </div>
-    <div className="footer-nav-group">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="/#about-section">About Us</a></li>
-        <li><a href="/contact">Contact</a></li>
-        <li><a href="#" className="cookie-settings-link">Cookie Settings</a>
-      <span>|</span>
-      <a href="/privacy">Privacy Policy</a></li>
-        <li><a href="/terms">Terms of Service</a></li>
-      </ul>
-    </div>
-  </div>
-  <div className="footer-bottom">
-    <p>© 2026 Denvertrip. All Rights Reserved.</p>
-    <div className="footer-bottom-links">
-      <a href="#" className="cookie-settings-link">Cookie Settings</a>
-      <span>|</span>
-      <a href="/privacy">Privacy Policy</a>
-      <span>|</span>
-      <a href="/terms">Terms of Service</a>
-    </div>
-  </div>
-</footer>
-
-
-      <Script src="/script.js" strategy="lazyOnload" />
+      <SiteFooter />
     </div>
   );
 }

@@ -2685,4 +2685,67 @@ body.modal-open { overflow: hidden; }
   }
 }
 
+/* ═══════════════════════════════════════════════
+   SITE HEADER & NAVIGATION EXTENSIONS
+═══════════════════════════════════════════════ */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(8, 8, 8, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+}
+
+.site-header .nav-links a.active {
+  color: var(--gold-light);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 4px;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-phone-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--warm-white);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  transition: var(--transition);
+}
+
+.nav-phone-link:hover {
+  border-color: var(--gold);
+  color: var(--gold-light);
+  background: rgba(201, 168, 76, 0.08);
+}
+
+.sitelink-card {
+  cursor: default;
+  transition: border-color 0.3s ease;
+}
+
+.sitelink-card:hover {
+  border-color: rgba(201, 168, 76, 0.35) !important;
+}
+
+@media (max-width: 900px) {
+  .nav-phone-link {
+    display: none;
+  }
+}
+
 

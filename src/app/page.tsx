@@ -8,6 +8,10 @@ import ColoradoCoverageMap from "@/components/ui/colorado-coverage-map";
 import HowItWorks from "@/components/ui/how-it-works";
 import { ExpandRouteMap } from "@/components/ui/expand-map";
 import { RandomLetterSwap } from "@/components/ui/random-letter-swap";
+import HighConvertingBookingForm from "@/components/HighConvertingBookingForm";
+import SitelinksGrid from "@/components/SitelinksGrid";
+import { trackCallClick } from "@/lib/analytics";
+import { BUSINESS_INFO } from "@/lib/business";
 
 /* ─── Fleet Data ─── */
 const fleetData = {
@@ -175,10 +179,32 @@ export default function HomePage() {
         </a>
       </li>
     </ul>
-    <button className="btn-gold nav-cta" onClick={scrollToPlanner}>Plan Your Ride</button>
-    <button className="hamburger" aria-label="Open menu" onClick={() => setMenuOpen(true)}>
-      <span></span><span></span><span></span>
-    </button>
+    <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+      <a
+        href={`tel:${BUSINESS_INFO.phoneRaw}`}
+        onClick={() => trackCallClick("navbar_phone")}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          color: "var(--warm-white)",
+          fontSize: "0.82rem",
+          fontWeight: 600,
+          textDecoration: "none",
+          padding: "8px 14px",
+          borderRadius: "6px",
+          background: "rgba(255,255,255,0.04)",
+          border: "1px solid rgba(201,168,76,0.25)"
+        }}
+      >
+        <span>📞</span>
+        <span className="hidden sm:inline">{BUSINESS_INFO.phoneDisplay}</span>
+      </a>
+      <button className="btn-gold nav-cta" onClick={scrollToPlanner}>Plan Your Ride</button>
+      <button className="hamburger" aria-label="Open menu" onClick={() => setMenuOpen(true)}>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -211,133 +237,14 @@ export default function HomePage() {
   </div>
 </section>
 
-{/*  ─── TRIP PLANNER ───  */}
-<section className="planner-section" id="planner-section">
-  <div className="planner-card">
-    <div className="planner-header">
-      <span className="planner-eyebrow">Plan Your Journey</span>
-      <h2 className="planner-title">Private Airport Transfer</h2>
-    </div>
-    <div className="planner-form">
-      <div className="field-row">
-        <div className="form-field" id="pickupFieldWrapper">
-          <label>Pickup Location</label>
-          <div className="field-input" onClick={() => { setPickupOpen(!pickupOpen); setDestOpen(false); }} style={{ cursor: 'pointer' }}>
-            <span className="field-icon">{pickup.includes('Airport') ? '✈' : '📍'}</span>
-            <span className="field-value">{pickup}</span>
-            <span className="field-arrow">›</span>
-          </div>
-          <div className={`field-dropdown${pickupOpen ? " open" : ""}`}>
-            <div className={`dropdown-item${pickup === "Denver International Airport (DEN)" ? " active" : ""}`} onClick={() => { setPickup("Denver International Airport (DEN)"); setPickupOpen(false); }}>✈ Denver International Airport (DEN)</div>
-            <div className={`dropdown-item${pickup === "Custom Location" ? " active" : ""}`} onClick={() => { setPickup("Custom Location"); setPickupOpen(false); }}>📍 Custom Location</div>
-          </div>
-        </div>
-        <div className="field-swap">⇌</div>
-        <div className="form-field" id="destFieldWrapper">
-          <label>Destination</label>
-          <div className="field-input">
-            <span className="field-icon">📍</span>
-            <input 
-              type="text" 
-              placeholder="Where are you going?" 
-              autoComplete="off" 
-              value={destSearch}
-              onChange={(e) => {
-                setDestSearch(e.target.value);
-                setDestOpen(true);
-              }}
-              onFocus={() => { setDestOpen(true); setPickupOpen(false); }}
-            />
-          </div>
-          <div className={`field-dropdown${destOpen ? " open" : ""}`}>
-            {destItems
-              .filter(d => d.name.toLowerCase().includes(destSearch.toLowerCase()))
-              .map((d, i) => (
-                <div 
-                  key={i} 
-                  className="dropdown-item" 
-                  onClick={() => {
-                    setDestSearch(d.name);
-                    setDestOpen(false);
-                  }}
-                >
-                  {d.icon} {d.name} <span className="dest-dist">{d.time}</span>
-                </div>
-            ))}
-            {destItems.filter(d => d.name.toLowerCase().includes(destSearch.toLowerCase())).length === 0 && (
-              <div className="dropdown-item text-gray-400">No destinations found</div>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="field-row field-row-three">
-        <div className="form-field">
-          <label>Date</label>
-          <div className="field-input">
-            <span className="field-icon">📅</span>
-            <input type="date" id="dateInput" min="" />
-          </div>
-        </div>
-        <div className="form-field">
-          <label>Pickup Time</label>
-          <div className="field-input">
-            <span className="field-icon">🕐</span>
-            <input type="time" id="timeInput" />
-          </div>
-        </div>
-        <div className="form-field">
-          <label>Passengers</label>
-          <div className="field-input passenger-selector">
-            <span className="field-icon">👤</span>
-            <span id="passengerCount">{passengers === 1 ? "1 Passenger" : `${passengers} Passengers`}</span>
-            <div className="passenger-controls">
-              <button onClick={() => adjustPassengers(-1)}>−</button>
-              <button onClick={() => adjustPassengers(1)}>+</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="vehicle-selector-row">
-        <label className="vehicle-label">Select Vehicle Class</label>
-        <div className="vehicle-options">
-          <button
-            className={`vehicle-opt${activeVehicle === "suv" ? " active" : ""}`}
-            onClick={() => setActiveVehicle("suv")}
-            id="vopt-suv"
-          >
-            <img className="vopt-img" src="vopt_suv.png" alt="Luxury SUV" />
-            <span className="vopt-name">Luxury SUV</span>
-            <span className="vopt-cap">Up to 6</span>
-          </button>
-          <button
-            className={`vehicle-opt${activeVehicle === "sedan" ? " active" : ""}`}
-            onClick={() => setActiveVehicle("sedan")}
-            id="vopt-sedan"
-          >
-            <img className="vopt-img" src="vopt_sedan.png" alt="Executive Sedan" />
-            <span className="vopt-name">Executive Sedan</span>
-            <span className="vopt-cap">Up to 3</span>
-          </button>
-          <button
-            className={`vehicle-opt${activeVehicle === "sprinter" ? " active" : ""}`}
-            onClick={() => setActiveVehicle("sprinter")}
-            id="vopt-sprinter"
-          >
-            <img className="vopt-img" src="vopt_sprinter.png" alt="Sprinter Van" />
-            <span className="vopt-name">Sprinter Van</span>
-            <span className="vopt-cap">Up to 14</span>
-          </button>
-        </div>
-      </div>
-      <div className="planner-actions">
-        <button className="btn-gold planner-btn" onClick={openComingSoon}>
-          Continue
-          <span className="btn-arrow">→</span>
-        </button>
-        <p className="planner-note">No credit card required to preview</p>
-      </div>
-    </div>
-  </div>
+{/*  ─── TRIP PLANNER / RESERVATION INQUIRY ───  */}
+<section className="planner-section" id="planner-section" style={{ position: "relative", zIndex: 10 }}>
+  <HighConvertingBookingForm
+    defaultService="Denver Airport Transfer"
+    defaultPickup="Denver International Airport (DEN)"
+    defaultDestination={destSearch || "Downtown Denver"}
+    defaultVehicle={activeVehicle}
+  />
 </section>
 
 {/*  ─── STATS BAR ───  */}
@@ -707,6 +614,9 @@ export default function HomePage() {
   </div>
 </section>
 
+{/*  ─── GOOGLE ADS SITELINKS & DISCOVERY ───  */}
+<SitelinksGrid currentPath="/" />
+
 {/*  ─── FOOTER ───  */}
 <footer className="footer">
   <div className="footer-top">
@@ -718,7 +628,7 @@ export default function HomePage() {
           <span className="logo-sub">TRANSPORTATION</span>
         </div>
       </div>
-      <p className="footer-tagline">Luxury transportation throughout<br />Denver and Colorado.</p>
+      <p className="footer-tagline">Colorado&apos;s premier luxury private car service. Private airport transfers, mountain resort chauffeurs, corporate transportation &amp; group charters.</p>
       <div className="social-links">
         <a href="#" className="social-link" aria-label="Instagram">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
@@ -729,40 +639,38 @@ export default function HomePage() {
         <a href="#" className="social-link" aria-label="LinkedIn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
         </a>
-        <a href="#" className="social-link" aria-label="Twitter/X">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
-        </a>
       </div>
     </div>
     <div className="footer-nav-group">
-      <h4>Services</h4>
+      <h4>Services &amp; Sitelinks</h4>
       <ul>
-        <li><a href="#airport-section">Airport Transportation</a></li>
-        <li><a href="#fleet-section">Fleet</a></li>
-        <li><a href="#destinations-section">Destinations</a></li>
-        <li><a href="#corporate-section">Corporate Transportation</a></li>
-        <li><a href="#occasions-section">Special Events</a></li>
+        <li><a href="/denver-airport-transportation">Denver Airport Transfers</a></li>
+        <li><a href="/luxury-suv-service">Luxury SUV Service</a></li>
+        <li><a href="/executive-car-service">Executive Car Service</a></li>
+        <li><a href="/group-transportation">Group Transportation</a></li>
+        <li><a href="/colorado-ski-resort-transfers">Ski Resort Transfers</a></li>
+        <li><a href="/corporate-transportation">Corporate Transportation</a></li>
+        <li><a href="/wedding-event-transportation">Wedding &amp; Events</a></li>
       </ul>
     </div>
     <div className="footer-nav-group">
-      <h4>Company</h4>
+      <h4>Company &amp; Legal</h4>
       <ul>
         <li><a href="#about-section">About Us</a></li>
-        <li><a href="#" onClick={(e) => { e.preventDefault(); scrollToPlanner(); }}>Reservations</a></li>
-        <li><a href="/contact">Contact</a></li>
+        <li><a href="/contact">Contact Concierge</a></li>
         <li><a href="/privacy">Privacy Policy</a></li>
         <li><a href="/terms">Terms of Service</a></li>
       </ul>
     </div>
     <div className="footer-contact">
-      <h4>Contact</h4>
+      <h4>24/7 Concierge</h4>
       <div className="contact-item">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.69h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        <span>+1 (720) 568-0206</span>
+        <a href={`tel:${BUSINESS_INFO.phoneRaw}`} onClick={() => trackCallClick("footer_phone")} style={{ color: "var(--warm-white)", fontWeight: 600 }}>{BUSINESS_INFO.phone}</a>
       </div>
       <div className="contact-item">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        <a href="mailto:coloradodenverlimousine@gmail.com">coloradodenverlimousine@gmail.com</a>
+        <a href={`mailto:${BUSINESS_INFO.email}`}>{BUSINESS_INFO.email}</a>
       </div>
       <div className="contact-item">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -771,11 +679,13 @@ export default function HomePage() {
     </div>
   </div>
   <div className="footer-bottom">
-    <p>© 2026 DenveroTrip. All Rights Reserved.</p>
+    <p>© 2026 DenveroTrip. All Rights Reserved. Licensed &amp; Insured Colorado Luxury Transportation.</p>
     <div className="footer-bottom-links">
       <a href="/privacy">Privacy Policy</a>
       <span>|</span>
       <a href="/terms">Terms of Service</a>
+      <span>|</span>
+      <a href="/contact">Contact</a>
     </div>
   </div>
 </footer>

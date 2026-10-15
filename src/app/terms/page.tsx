@@ -1,100 +1,81 @@
-"use client";
+import type { Metadata } from "next";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
+import { BUSINESS_INFO } from "@/lib/business";
 
-import React from "react";
-import Script from "next/script";
+export const metadata: Metadata = {
+  title: "Terms of Service | DenveroTrip Transportation",
+  description: "Terms and conditions for DenveroTrip luxury transportation, private chauffeur bookings, ski resort transfers, and charter services.",
+  alternates: {
+    canonical: "/terms",
+  },
+};
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      
+      <SiteHeader currentPath="/terms" />
 
+      <main>
+        <header className="page-hero">
+          <div className="container">
+            <span className="section-eyebrow" style={{ color: "var(--gold-light)" }}>Legal &amp; Policy</span>
+            <h1 className="page-title">Terms of Service</h1>
+            <p style={{ color: "var(--text-muted)" }}>Last Updated: August 2026</p>
+          </div>
+        </header>
 
-{/*  ─── NAVIGATION ───  */}
-<nav className="navbar" id="navbar">
-  <div className="nav-inner">
-    <a href="/" className="nav-logo">
-      <span className="logo-icon">✦</span>
-      <div className="logo-text">
-        <span className="logo-main">DENVER</span>
-        <span className="logo-sub">TRIP</span>
-      </div>
-    </a>
-    <ul className="nav-links" id="navLinks">
-      <li><a href="/#airport-section">Airport Transfer</a></li>
-      <li><a href="/#fleet-section">Fleet</a></li>
-      <li><a href="/#destinations-section">Destinations</a></li>
-      <li><a href="/#corporate-section">Corporate</a></li>
-      <li><a href="/#about-section">About</a></li>
-    </ul>
-    <a href="/#planner-section" className="btn-gold nav-cta" style={{"textDecoration": "none", "textAlign": "center"}}>Plan Your Ride</a>
-  </div>
-</nav>
+        <section className="legal-content">
+          <h2>1. Agreement to Terms</h2>
+          <p>
+            By booking a ride, requesting a quote, or utilizing private chauffeur services provided by {BUSINESS_INFO.name}, you agree to be bound by these Terms of Service and Colorado state transportation regulations.
+          </p>
 
-<header className="page-hero">  {/*  Google Consent Mode v2 Default  */}
-  
+          <h2>2. Reservations &amp; Quotes</h2>
+          <p>
+            Online quotes and quote requests are subject to driver and fleet availability until officially confirmed by our dispatch team. Rates are determined based on destination distance, vehicle category, service duration, and seasonal mountain driving conditions.
+          </p>
 
+          <h2>3. Cancellations &amp; Modifications</h2>
+          <p>
+            We accommodate itinerary adjustments with reasonable advance notice. Cancellations made with at least 24 hours prior to scheduled pickup incur no cancellation penalty. Late cancellations or client no-shows may be subject to a fee up to the total reservation value.
+          </p>
 
+          <h2>4. Flight Tracking &amp; Airport Pickups</h2>
+          <p>
+            For Denver International Airport (DEN) pickups, we monitor flight status via real-time FAA feeds. Complimentary wait time is extended for commercial flights (up to 45 minutes after actual landing for domestic, 60 minutes for international) to accommodate baggage collection.
+          </p>
 
-  <h1 className="page-title">Terms of Service</h1>
-  <p style={{"color": "var(--text-muted)"}}>Last Updated: August 2026</p>
-</header>
+          <h2>5. Passenger Safety &amp; Conduct</h2>
+          <p>
+            To guarantee safety and comfort for all clients and chauffeurs:
+          </p>
+          <ul>
+            <li>Smoking, vaping, and use of illicit substances are strictly prohibited inside all vehicles.</li>
+            <li>Seatbelts must remain fastened during vehicle operation in accordance with Colorado state law.</li>
+            <li>{BUSINESS_INFO.name} reserves the right to terminate service without refund if passenger behavior endangers vehicle occupants or safe driving.</li>
+          </ul>
 
-<section className="legal-content">
-  <h2>1. Agreement to Terms</h2>
-  <p>By accessing or using our services, you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the service.</p>
-  
-  <h2>2. Reservations and Cancellations</h2>
-  <p>All reservations are subject to availability. We require a minimum of 24 hours notice for any cancellations or changes to your reservation. Cancellations made less than 24 hours before the scheduled pickup time may be subject to a cancellation fee up to the full amount of the reservation.</p>
+          <h2>6. Vehicle Care &amp; Liability</h2>
+          <p>
+            Clients are responsible for any intentional damage or excessive cleaning fees resulting from spills or passenger negligence. {BUSINESS_INFO.name} is fully licensed and commercially insured in Colorado. We are not liable for transit delays caused by severe mountain blizzards, I-70 road closures by CDOT, or unprecedented force majeure events.
+          </p>
 
-  <h2>3. Passenger Conduct</h2>
-  <p>Denvertrip reserves the right to refuse service to any passenger who exhibits inappropriate behavior, appears intoxicated, or poses a threat to the chauffeur or vehicle. Smoking, drug use, and the consumption of alcohol by minors are strictly prohibited in all of our vehicles.</p>
+          <h2>7. Contact Concierge</h2>
+          <p>
+            If you have questions regarding these terms, please contact our 24/7 dispatch office at{" "}
+            <a href={`tel:${BUSINESS_INFO.phoneRaw}`} style={{ color: "var(--gold)" }}>
+              {BUSINESS_INFO.phone}
+            </a>{" "}
+            or via email at{" "}
+            <a href={`mailto:${BUSINESS_INFO.email}`} style={{ color: "var(--gold)" }}>
+              {BUSINESS_INFO.email}
+            </a>.
+          </p>
+        </section>
+      </main>
 
-  <h2>4. Liability</h2>
-  <p>Denvertrip is not liable in the event of mechanical breakdown while on charter and will only be responsible for making up lost time at a mutually agreed date. The client assumes full financial liability for any damage to the vehicle caused during the duration of the rental by them or any members of their party.</p>
-  
-  <h2>5. Changes to Terms</h2>
-  <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. What constitutes a material change will be determined at our sole discretion.</p>
-</section>
-
-{/*  ─── FOOTER ───  */}
-<footer className="footer">
-  <div className="footer-top">
-    <div className="footer-brand">
-      <div className="footer-logo">
-        <span className="logo-icon">✦</span>
-        <div className="logo-text">
-          <span className="logo-main">DENVER</span>
-          <span className="logo-sub">TRIP</span>
-        </div>
-      </div>
-      <p className="footer-tagline">Luxury transportation throughout<br />Denver and Colorado.</p>
-    </div>
-    <div className="footer-nav-group">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="/#about-section">About Us</a></li>
-        <li><a href="/contact">Contact</a></li>
-        <li><a href="#" className="cookie-settings-link">Cookie Settings</a>
-      <span>|</span>
-      <a href="/privacy">Privacy Policy</a></li>
-        <li><a href="/terms">Terms of Service</a></li>
-      </ul>
-    </div>
-  </div>
-  <div className="footer-bottom">
-    <p>© 2026 Denvertrip. All Rights Reserved.</p>
-    <div className="footer-bottom-links">
-      <a href="#" className="cookie-settings-link">Cookie Settings</a>
-      <span>|</span>
-      <a href="/privacy">Privacy Policy</a>
-      <span>|</span>
-      <a href="/terms">Terms of Service</a>
-    </div>
-  </div>
-</footer>
-
-
-      <Script src="/script.js" strategy="lazyOnload" />
+      <SiteFooter />
     </div>
   );
 }
